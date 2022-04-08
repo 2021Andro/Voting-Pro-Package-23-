@@ -112,7 +112,7 @@ public class Register_Activity extends AppCompatActivity {
 
             String uid = id+"473"+phoneNumber;
 
-            User_Info user = new User_Info(uid, name, null, emailId, phoneNumber, pinCode, gander);
+            User_Info user = new User_Info(uid, null, name, emailId, phoneNumber, pinCode, gander);
 
             Intent intent = new Intent(Register_Activity.this, ManageOtp_Activity.class);
 

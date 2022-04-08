@@ -54,6 +54,8 @@ public class ManageOtp_Activity extends AppCompatActivity {
 
         initializeOtp();
 
+        Log.d(TAG, "onCreate: Name "+user.getUserName());
+
 
     }
 

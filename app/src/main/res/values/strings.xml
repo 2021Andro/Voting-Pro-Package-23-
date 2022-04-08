@@ -13,4 +13,9 @@
     <string name="next_anyway_btn">Next Anyway</string>
     <string name="registration_task_in_progress">Registration task in progress please wait</string>
     <string name="registration_task_title">Registration Task</string>
+    <string name="setting_hader_home">Setting</string>
+    <string name="open_hader">Open</string>
+    <string name="close_hader">Close</string>
+    <string name="email_id">Email ID</string>
+    <string name="name">Name</string>
 </resources>
