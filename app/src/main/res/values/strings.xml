@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Voting Pro</string>
+    <string name="registration_from">Registration From</string>
+    <string name="enter_your_name_registration">Enter Your Name</string>
+    <string name="enter_your_email_id_registration">Enter Your Email ID</string>
+    <string name="enter_your_phone_number_registration">Enter Your Phone Number</string>
+    <string name="enter_your_pin_code_registration">Enter Your Pin Code</string>
+    <string name="male_registration">Male</string>
+    <string name="ather_registration">Ather</string>
+    <string name="female_registration">Female</string>
+    <string name="enter_your_otp">Enter Your OTP</string>
+    <string name="set_image_btn">Set Image</string>
+    <string name="next_anyway_btn">Next Anyway</string>
+    <string name="registration_task_in_progress">Registration task in progress please wait</string>
+    <string name="registration_task_title">Registration Task</string>
 </resources>

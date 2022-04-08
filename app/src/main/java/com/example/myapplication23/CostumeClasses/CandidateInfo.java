@@ -2,7 +2,7 @@ package com.example.myapplication23.CostumeClasses;
 
 import java.io.Serializable;
 
-public class CandidateInfo extends SupportClass implements Serializable
+public class CandidateInfo extends Support_Class implements Serializable
 {
     private int CandidateID;
     private String CandidateName;

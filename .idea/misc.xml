@@ -3,8 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/activity_home.xml" value="0.15364583333333334" />
         <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/activity_main.xml" value="0.1734375" />
-        <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/activity_manage_otp.xml" value="0.1734375" />
+        <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/activity_register.xml" value="0.18" />
+        <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/activity_set_profile_image.xml" value="0.21" />
       </map>
     </option>
   </component>

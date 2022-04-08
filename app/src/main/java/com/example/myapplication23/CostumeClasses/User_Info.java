@@ -2,9 +2,9 @@ package com.example.myapplication23.CostumeClasses;
 
 import java.io.Serializable;
 
-public class UserInfo extends SupportClass implements Serializable
+public class User_Info extends Support_Class implements Serializable
 {
-    private int UserID;
+    private String UserID;
     private String UserImage;
     private String UserName;
     private String UserEmailID;
@@ -12,10 +12,10 @@ public class UserInfo extends SupportClass implements Serializable
     private String UserPinCode;
     private String UserGander;
 
-    public UserInfo() {
+    public User_Info() {
     }
 
-    public UserInfo(int userID, String userImage, String userName, String userEmailID, String userPhoneNumber, String userPinCode, String userGander) {
+    public User_Info(String userID, String userImage, String userName, String userEmailID, String userPhoneNumber, String userPinCode, String userGander) {
         UserID = userID;
         UserImage = userImage;
         UserName = userName;
@@ -25,11 +25,11 @@ public class UserInfo extends SupportClass implements Serializable
         UserGander = userGander;
     }
 
-    public int getUserID() {
+    public String getUserID() {
         return UserID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(String userID) {
         UserID = userID;
     }
 
@@ -83,7 +83,7 @@ public class UserInfo extends SupportClass implements Serializable
 
     @Override
     public String toString() {
-        return "UserInfo{" +
+        return "User_Info{" +
                 "UserID=" + UserID +
                 ", UserImage='" + UserImage + '\'' +
                 ", UserName='" + UserName + '\'' +

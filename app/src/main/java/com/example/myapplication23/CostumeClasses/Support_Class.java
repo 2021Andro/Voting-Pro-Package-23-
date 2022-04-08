@@ -1,9 +1,6 @@
 package com.example.myapplication23.CostumeClasses;
 
-import java.util.ArrayList;
-
-public class SupportClass
-{
+public class Support_Class {
     private String DbRef;
     private String CategoryName;
     private String RatingStars;
@@ -12,6 +9,9 @@ public class SupportClass
     private String DislikeVotes;
     private String AllVotes;
     private String CommentVotes;
+
+    public Support_Class() {
+    }
 
     public String getDbRef() {
         return DbRef;
