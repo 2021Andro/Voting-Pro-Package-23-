@@ -11,9 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.myapplication23.Activitys.Home.Home_Activity;
+import com.example.myapplication23.Activitys.Home_Activity;
 import com.example.myapplication23.CostumeClasses.MyApp;
-import com.example.myapplication23.CostumeClasses.User_Info;
 import com.example.myapplication23.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,8 +20,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;

@@ -11,10 +11,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VotingPro">
         <activity
-            android:name=".Setting_Activity"
+            android:name=".Activitys.VotingBallot_Activity"
             android:exported="false" />
         <activity
-            android:name=".Activitys.Home.Home_Activity"
+            android:name=".Activitys.CandidateList_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.Setting_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.Home_Activity"
             android:exported="false" />
         <activity
             android:name=".Activitys.Registration.SetProfileImage_Activity"

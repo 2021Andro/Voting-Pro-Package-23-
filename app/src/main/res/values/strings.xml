@@ -18,4 +18,8 @@
     <string name="close_hader">Close</string>
     <string name="email_id">Email ID</string>
     <string name="name">Name</string>
+    <string name="voting_ballot">Voting Ballot</string>
+    <string name="this_vote_already_submitted_by">This vote already submitted by</string>
+    <string name="enter_the_comment_on_this_subject_of_25_character">Enter the comment on this subject of 25 character</string>
+    <string name="going_vote">Going Vote</string>
 </resources>

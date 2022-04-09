@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/activity_category_list.xml" value="0.18" />
         <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/activity_home.xml" value="0.15364583333333334" />
         <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/activity_main.xml" value="0.1734375" />
         <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/activity_manage_otp.xml" value="0.1734375" />
@@ -10,6 +11,9 @@
         <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/activity_set_profile_image.xml" value="0.21" />
         <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/activity_setting.xml" value="0.15364583333333334" />
         <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/activity_splash.xml" value="0.15364583333333334" />
+        <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/activity_voting_ballot.xml" value="0.1" />
+        <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/my_candi_rec_adapter_layout.xml" value="0.1734375" />
+        <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/my_cat_rec_adapter_layout.xml" value="0.1734375" />
         <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/layout/nav_hader_home.xml" value="0.15364583333333334" />
         <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/menu/my_menu_hader_home.xml" value="0.15364583333333334" />
       </map>

@@ -1,8 +1,10 @@
-package com.example.myapplication23;
+package com.example.myapplication23.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.myapplication23.R;
 
 public class Setting_Activity extends AppCompatActivity {
 

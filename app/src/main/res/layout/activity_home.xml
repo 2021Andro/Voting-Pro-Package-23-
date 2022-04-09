@@ -5,13 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_primary_color"
     android:id="@+id/drawer"
     tools:openDrawer="start"
-    tools:context=".Activitys.Home.Home_Activity">
+    tools:context=".Activitys.Home_Activity">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         >
 
         <androidx.appcompat.widget.Toolbar
@@ -19,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/app_name"
+            android:paddingBottom="10dp"
             android:background="@color/dark_primary_color"
             app:titleTextColor="@color/text_color"
             />
@@ -27,9 +30,9 @@
             android:id="@+id/rvList_Home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp" />
+            android:layout_gravity="center_horizontal" />
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView

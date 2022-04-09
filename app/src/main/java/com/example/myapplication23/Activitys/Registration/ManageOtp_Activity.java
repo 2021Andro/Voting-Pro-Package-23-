@@ -3,14 +3,12 @@ package com.example.myapplication23.Activitys.Registration;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.myapplication23.Activitys.Home.Home_Activity;
 import com.example.myapplication23.CostumeClasses.MyApp;
 import com.example.myapplication23.CostumeClasses.User_Info;
 import com.example.myapplication23.R;
