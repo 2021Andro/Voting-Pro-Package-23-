@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class Votes implements Serializable {
 
-    private String VotingCategoryName;
+    private String VotingCandidateName;
+    private String VotingStatus;
     private String VotingSubject;
     private String VotingDate;
     private String VoteName;
@@ -14,8 +15,9 @@ public class Votes implements Serializable {
     public Votes() {
     }
 
-    public Votes(String votingCategoryName, String votingSubject, String votingDate, String voteName, String votingComments, boolean isVotes) {
-        VotingCategoryName = votingCategoryName;
+    public Votes(String votingCandidateName, String votingStatus, String votingSubject, String votingDate, String voteName, String votingComments, boolean isVotes) {
+        VotingCandidateName = votingCandidateName;
+        VotingStatus = votingStatus;
         VotingSubject = votingSubject;
         VotingDate = votingDate;
         VoteName = voteName;
@@ -23,12 +25,20 @@ public class Votes implements Serializable {
         IsVotes = isVotes;
     }
 
-    public String getVotingCategoryName() {
-        return VotingCategoryName;
+    public String getVotingCandidateName() {
+        return VotingCandidateName;
     }
 
-    public void setVotingCategoryName(String votingCategoryName) {
-        VotingCategoryName = votingCategoryName;
+    public void setVotingCandidateName(String votingCandidateName) {
+        VotingCandidateName = votingCandidateName;
+    }
+
+    public String getVotingStatus() {
+        return VotingStatus;
+    }
+
+    public void setVotingStatus(String votingStatus) {
+        VotingStatus = votingStatus;
     }
 
     public String getVotingSubject() {
@@ -69,17 +79,5 @@ public class Votes implements Serializable {
 
     public void setVotes(boolean votes) {
         IsVotes = votes;
-    }
-
-    @Override
-    public String toString() {
-        return "Votes{" +
-                "VotingCategoryName='" + VotingCategoryName + '\'' +
-                ", VotingSubject='" + VotingSubject + '\'' +
-                ", VotingDate='" + VotingDate + '\'' +
-                ", VoteName='" + VoteName + '\'' +
-                ", VotingComments='" + VotingComments + '\'' +
-                ", IsVotes=" + IsVotes +
-                '}';
     }
 }

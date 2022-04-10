@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.myapplication23.CostumeAdapters.MyCandiRecListAdapter;
@@ -24,10 +25,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CandidateList_Activity extends AppCompatActivity implements MyRecCandidatListEvent {
+public class CandidateList_Activity extends AppCompatActivity implements MyRecCandidatListEvent{
 
     private RecyclerView rvCandidateList;
-    private ArrayList<CandidateInfo> candidateList;
+    private ArrayList<CandidateInfo> candidateList, temporaryCandList;
     private RecyclerView.LayoutManager layoutManager;
     private MyCandiRecListAdapter myCandiAdapter;
 
@@ -47,6 +48,7 @@ public class CandidateList_Activity extends AppCompatActivity implements MyRecCa
         myCandiAdapter = new MyCandiRecListAdapter(this);
 
         candidateList = new ArrayList<>();
+        temporaryCandList = new ArrayList<>();
 
         rvCandidateList.setLayoutManager(layoutManager);
 
@@ -61,30 +63,25 @@ public class CandidateList_Activity extends AppCompatActivity implements MyRecCa
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        // after getting the data we are calling on success method
-                        // and inside this method we are checking if the received
-                        // query snapshot is empty or not.
+
                         if (!queryDocumentSnapshots.isEmpty()) {
-                            // if the snapshot is not empty we are
-                            // hiding our progress bar and adding
-                            // our data in a list.
+
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             for (DocumentSnapshot d : list) {
-                                // after getting this list we are passing
-                                // that list to our object class.
-                                CandidateInfo c = d.toObject(CandidateInfo.class);
 
-                                // and we will pass this object class
-                                // inside our arraylist which we have
-                                // created for recycler view.
-                                candidateList.add(c);
+                                CandidateInfo candidate = d.toObject(CandidateInfo.class);
+
+                                Log.d(MyApp.myTag, "CandidateList_Activity Database Reference --> "+candidate.getDbRef().toString());
+
+                                candidateList.add(candidate);
                             }
-                            // after adding the data to recycler view.
-                            // we are calling recycler view notifuDataSetChanged
-                            // method to notify that data has been changed in recycler view.
+
+                            temporaryCandList = candidateList;
+
                             myCandiAdapter.notifyDataSetChanged();
+
                         } else {
-                            // if the snapshot is empty we are displaying a toast message.
+
                             Toast.makeText(CandidateList_Activity.this, "No data found in Database", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -97,14 +94,31 @@ public class CandidateList_Activity extends AppCompatActivity implements MyRecCa
     @Override
     public void setOnCandidateRecClickListener(int position) {
 
+        CandidateInfo candidate = temporaryCandList.get(position);
 
-        Toast.makeText(this, "Name "+candidateList.get(position).getCandidateName(), Toast.LENGTH_SHORT).show();
+
+
+        Log.d(MyApp.myTag, "Candidate Name : "+candidate.getCandidateName());
+        Log.d(MyApp.myTag, "Candidate Category : "+candidate.getCategoryName());
+        Log.d(MyApp.myTag, "Candidate Status : "+candidate.getCandidateStatus());
+        Log.d(MyApp.myTag, "Candidate Subject  : "+candidate.getCandidateSubject());
+        Log.d(MyApp.myTag, "Candidate Like Vote : "+candidate.getLikeVotes());
+        Log.d(MyApp.myTag, "Candidate Neutral Vote : "+candidate.getNeutralVotes());
+        Log.d(MyApp.myTag, "Candidate Dislike Vote : "+candidate.getDislikeVotes());
+        Log.d(MyApp.myTag, "Candidate All Vote : "+candidate.getAllVotes());
+        Log.d(MyApp.myTag, "Candidate Vote DB : "+candidate.getDbRef());
+        Log.d(MyApp.myTag, "==========================");
 
         Intent intent = new Intent(getApplicationContext(), VotingBallot_Activity.class);
 
+        intent.putExtra(MyApp.CANDIDET_DB_REF, candidate.getDbRef());
+        intent.putExtra(MyApp.CANDIDET_IMAGE, candidate.getCandidateImage());
+        intent.putExtra(MyApp.CANDIDET_NAME, candidate.getCandidateName());
+        intent.putExtra(MyApp.CANDIDET_CATEGORY, candidate.getCategoryName());
+        intent.putExtra(MyApp.CANDIDET_STATUS, candidate.getCandidateStatus());
+        intent.putExtra(MyApp.CANDIDET_SUBJECT, candidate.getCandidateSubject());
+        intent.putExtra(MyApp.CANDIDET_DB_REF, candidate.getDbRef());
+
         startActivity(intent);
-
-
-
     }
 }

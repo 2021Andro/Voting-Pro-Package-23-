@@ -13,7 +13,19 @@ public class MyApp extends Application {
     public static final String myTag = "MyApp";
 
 
-    public static final String CATEGORY = "CATEGORY";
+    // This is candidate variable represent
+    public static final String CANDIDET_ID = "Candidate_ID";
+    public static final String CANDIDET_DB_REF = "Candidate_DB";
+    public static final String CANDIDET_IMAGE = "Candidate_Image";
+    public static final String CANDIDET_NAME = "Candidate_Name";
+    public static final String CANDIDET_CATEGORY = "Candidate_Category";
+    public static final String CANDIDET_STATUS = "Candidate_Status";
+    public static final String CANDIDET_SUBJECT = "Candidate_Subject";
+    public static final String CANDIDET_LIKE_VOTE = "Candidate_Like_Vote";
+    public static final String CANDIDET_NEUTRAL_VOTE = "Candidate_Neutral_Vote";
+    public static final String CANDIDET_DISLIKE_VOTE = "Candidate_Dislike_Vote";
+    public static final String CANDIDET_ALL_VOTE = "Candidate_All_Vote";
+;
     public static final String CANDIDATE = "CANDIDATE";
     public static final String USER = "USER_INFO";
 

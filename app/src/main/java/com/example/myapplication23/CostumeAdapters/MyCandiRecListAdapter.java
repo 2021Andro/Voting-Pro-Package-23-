@@ -26,9 +26,11 @@ import java.util.ArrayList;
 public class MyCandiRecListAdapter extends RecyclerView.Adapter<MyCandiRecListAdapter.MyViewHolder> {
 
     private ArrayList<CandidateInfo> candidateList;
+    private Context context;
     private MyRecCandidatListEvent event;
 
     public MyCandiRecListAdapter(Context context) {
+        this.context = context;
         this.event = (MyRecCandidatListEvent) context;
     }
 
@@ -65,22 +67,10 @@ public class MyCandiRecListAdapter extends RecyclerView.Adapter<MyCandiRecListAd
         holder.tvStatus.setText(candidate.getCandidateStatus());
 
         Glide
-                .with(holder.itemView.getContext())
+                .with(context)
                 .asBitmap()
                 .load(candidate.getCandidateImage())
                 .into(holder.ivProfile);
-
-        holder.btnGoToVote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(holder.itemView.getContext(), VotingBallot_Activity.class);
-
-                intent.putExtra(MyApp.CANDIDATE, candidate);
-
-                holder.itemView.getContext().startActivity(intent);
-            }
-        });
 
     }
 
@@ -140,6 +130,15 @@ public class MyCandiRecListAdapter extends RecyclerView.Adapter<MyCandiRecListAd
                     laShowDeal.setVisibility(View.GONE);
                     ivArrowUp.setVisibility(View.GONE);
                     ivArrowDown.setVisibility(View.VISIBLE);
+
+                }
+            });
+
+            btnGoToVote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    event.setOnCandidateRecClickListener( candidateList.indexOf( (CandidateInfo) itemView.getTag() ) );
 
                 }
             });

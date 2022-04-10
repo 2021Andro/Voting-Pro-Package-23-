@@ -110,6 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
+        android:layout_gravity="center_horizontal"
         android:ems="10"
         android:hint="@string/enter_the_comment_on_this_subject_of_25_character"
         android:gravity="start|top"
@@ -117,14 +118,13 @@
 
     <TextView
         android:id="@+id/tvAfterVotingMassage_VB"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:visibility="gone"
+        android:layout_gravity="center_horizontal"
         android:textStyle="bold"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginTop="50sp"
         android:text="@string/this_vote_already_submitted_by" />
 
     <LinearLayout
