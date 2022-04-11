@@ -24,7 +24,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -37,9 +39,10 @@ public class VotingBallot_Activity extends AppCompatActivity {
     private TextView tvName, tvStatus, tvTodaySubject, tvAfterVotingMassage;
     private EditText etComment;
 
-    private String candDbId, candImage, candName, candCategoryName, candStatus, candiSubject, comment, userAuthID;
+    private String candiDbId, candiImage, candiName, candiCategoryName, candiStatus, candiSubject, comment, userAuthID;
     private LinearLayout voting_button_layout;
     private DatabaseReference votingRef;
+    private ValueEventListener addVoteListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,33 +51,44 @@ public class VotingBallot_Activity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        candDbId = intent.getStringExtra(MyApp.CANDIDET_DB_REF);
-        candImage = intent.getStringExtra(MyApp.CANDIDET_IMAGE);
-        candName = intent.getStringExtra(MyApp.CANDIDET_NAME);
-        candCategoryName = intent.getStringExtra(MyApp.CANDIDET_CATEGORY);
-        candStatus = intent.getStringExtra(MyApp.CANDIDET_STATUS);
+        candiDbId = intent.getStringExtra(MyApp.CANDIDET_DB_REF);
+        candiImage = intent.getStringExtra(MyApp.CANDIDET_IMAGE);
+        candiName = intent.getStringExtra(MyApp.CANDIDET_NAME);
+        candiCategoryName = intent.getStringExtra(MyApp.CANDIDET_CATEGORY);
+        candiStatus = intent.getStringExtra(MyApp.CANDIDET_STATUS);
         candiSubject = intent.getStringExtra(MyApp.CANDIDET_SUBJECT);
+
+        profileImage = findViewById(R.id.profile_image_VB);
+
+        tvName = findViewById(R.id.tvName_VB);
+        tvStatus = findViewById(R.id.tvStatus_VB);
+        tvTodaySubject = findViewById(R.id.tvTodaySubject_VB);
+        tvAfterVotingMassage = findViewById(R.id.tvAfterVotingMassage_VB);
+        etComment = findViewById(R.id.etComment_VB);
+
+        voting_button_layout = findViewById(R.id.voting_button_layout_VB);
 
         userAuthID = MyApp.myAuth.getUid().trim();
 
         votingRef = MyApp.myRef.getReference("Voting");
 
-        votingRef.addValueEventListener(new ValueEventListener() {
+        // This is checking user voting submit or not
+        addVoteListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 Votes votes = snapshot.getValue(Votes.class);
 
                 if (
-                        snapshot.child("Like").child(candDbId).hasChild(userAuthID) ||
-                                snapshot.child("Neutral").child(candDbId).hasChild(userAuthID) ||
-                                snapshot.child("Dislike").child(candDbId).hasChild(userAuthID)
+                        snapshot.child("Like").child(candiDbId).hasChild(userAuthID) ||
+                                snapshot.child("Neutral").child(candiDbId).hasChild(userAuthID) ||
+                                snapshot.child("Dislike").child(candiDbId).hasChild(userAuthID)
 
                 ) {
                     // User already voting completed
 
-                        Log.d(MyApp.myTag, "Subject : "+votes.getVotingSubject());
-                        setVotinglayoutVisible();
+                    Log.d(MyApp.myTag, "Subject : " + votes.getVotingSubject());
+                    setVotinglayoutVisible();
 
                 } else {
                     // User voting is not completed
@@ -88,34 +102,28 @@ public class VotingBallot_Activity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
 
-        Log.d(MyApp.myTag, "Candidate Name : " + candName);
-        Log.d(MyApp.myTag, "Candidate Category : " + candCategoryName);
-        Log.d(MyApp.myTag, "Candidate Status : " + candStatus);
-        Log.d(MyApp.myTag, "Candidate Subject  : " + candiSubject);
-        Log.d(MyApp.myTag, "Candidate DR : " + candDbId);
 
-        profileImage = findViewById(R.id.profile_image_VB);
+    }
 
-        tvName = findViewById(R.id.tvName_VB);
-        tvStatus = findViewById(R.id.tvStatus_VB);
-        tvTodaySubject = findViewById(R.id.tvTodaySubject_VB);
-        tvAfterVotingMassage = findViewById(R.id.tvAfterVotingMassage_VB);
-        etComment = findViewById(R.id.etComment_VB);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        voting_button_layout = findViewById(R.id.voting_button_layout_VB);
 
-        tvName.setText(candName);
-        tvStatus.setText(candStatus);
+        tvName.setText(candiName);
+        tvStatus.setText(candiStatus);
         tvTodaySubject.setText(candiSubject);
 
         Glide
                 .with(getApplicationContext())
                 .asBitmap()
-                .load(candImage)
+                .load(candiImage)
                 .into(profileImage);
 
+
+        votingRef.addValueEventListener(addVoteListener);
 
     }
 
@@ -196,14 +204,65 @@ public class VotingBallot_Activity extends AppCompatActivity {
 
         Votes vote = new Votes();
 
-        vote.setVotingCandidateName(candName);
-        vote.setVotingStatus(candStatus);
+        vote.setVotingCandidateName(candiName);
+        vote.setVotingStatus(candiStatus);
         vote.setVotingSubject(candiSubject);
         vote.setVotingDate(votingDateTime);
         vote.setVotingComments(comment);
         vote.setVotes(true);
 
+        setVoteRecordHistoryDbRef(vote, voteName);
+
         setVoteRecordDbRef(vote, voteName);
+
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setVoteRecordHistoryDbRef(Votes vote, String voteName) {
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm");
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        String currentDay = LocalDate.now().getDayOfWeek().name();
+        String userId = MyApp.myAuth.getUid();
+
+        CollectionReference user_voting_history = MyApp.myCS.collection("User Voting History");
+
+
+//
+//        if ()
+//        {
+//
+//            day = weekOfDay[0];
+//
+//        }else if (weekOfDay[1].equals(currentDay))
+//        {
+//
+//            day = weekOfDay[0];
+//
+//
+//        }else if (weekOfDay[2].equals(currentDay))
+//        {
+//
+//        }else if (weekOfDay[3].equals(currentDay))
+//        {
+//
+//        }else if (weekOfDay[4].equals(currentDay))
+//        {
+//
+//        }else if (weekOfDay[5].equals(currentDay))
+//        {
+//
+//        }else if (weekOfDay[6].equals(currentDay))
+//        {
+//
+//        }
+        user_voting_history
+                .document(userId.toString())
+                .collection(currentDay)
+                .document(localDateTime.toString())
+                .set(vote);
 
 
     }
@@ -214,7 +273,7 @@ public class VotingBallot_Activity extends AppCompatActivity {
 
         votingRef
                 .child(votingName)
-                .child(candDbId)
+                .child(candiDbId)
                 .child(MyApp.myAuth.getUid().toString())
                 .setValue(vote)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -222,6 +281,7 @@ public class VotingBallot_Activity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
 
                         if (task.isSuccessful()) {
+
 
                             setVotinglayoutInvisible();
 

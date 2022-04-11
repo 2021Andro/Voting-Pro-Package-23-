@@ -58,7 +58,7 @@ public class Home_Activity extends AppCompatActivity implements MyRecEvent {
 
         rvList.setAdapter(myAdapter);
 
-        Category educationCat = new Category(0, "Edcation", MyApp.CATEGORY_IMAGES_EDUCATION);
+        Category educationCat = new Category(0, "Education", MyApp.CATEGORY_IMAGES_EDUCATION);
         Category entertainmentCat = new Category(1, "Entertainment", MyApp.CATEGORY_IMAGES_ENTERTAINMENT);
         Category politicalCat = new Category(2, "Political", MyApp.CATEGORY_IMAGES_POLITICAL);
         Category socialCat = new Category(3, "Social", MyApp.CATEGORY_IMAGES_SOCIAL);
@@ -85,7 +85,7 @@ public class Home_Activity extends AppCompatActivity implements MyRecEvent {
 
         Intent intent = new Intent(getApplicationContext(), CandidateList_Activity.class);
 
-        intent.putExtra(MyApp.CATEGORY_NAME, categoryList.get(position));
+        intent.putExtra(MyApp.CATEGORY_NAME, categoryList.get(position).getCategoryName());
 
         startActivity(intent);
 

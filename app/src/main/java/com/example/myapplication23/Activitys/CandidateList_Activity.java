@@ -32,14 +32,16 @@ public class CandidateList_Activity extends AppCompatActivity implements MyRecCa
     private RecyclerView.LayoutManager layoutManager;
     private MyCandiRecListAdapter myCandiAdapter;
 
-    private Category category;
+    private String categoryName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_candidate_list);
 
-        category = (Category) getIntent().getSerializableExtra(MyApp.CATEGORY_NAME);
+        Intent intent = getIntent();
+
+        categoryName = intent.getStringExtra(MyApp.CATEGORY_NAME);
 
         rvCandidateList = findViewById(R.id.rvCandidateList);
 
@@ -48,7 +50,6 @@ public class CandidateList_Activity extends AppCompatActivity implements MyRecCa
         myCandiAdapter = new MyCandiRecListAdapter(this);
 
         candidateList = new ArrayList<>();
-        temporaryCandList = new ArrayList<>();
 
         rvCandidateList.setLayoutManager(layoutManager);
 
@@ -58,7 +59,7 @@ public class CandidateList_Activity extends AppCompatActivity implements MyRecCa
 
         MyApp
                 .myCS
-                .collection("Categories "+category.getCategoryName()+" List")
+                .collection("Categories "+categoryName+" List")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override

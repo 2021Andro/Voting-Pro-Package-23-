@@ -104,8 +104,19 @@ public class MyCandiRecListAdapter extends RecyclerView.Adapter<MyCandiRecListAd
                     laShowDeal.setVisibility(View.GONE);
                     ivArrowUp.setVisibility(View.GONE);
                     ivArrowDown.setVisibility(View.VISIBLE);
+                    event.setOnCandidateRecClickListener( candidateList.indexOf( (CandidateInfo) itemView.getTag() ) );
                 }
             });
+
+            laShowDeal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                laShowDeal.setVisibility(View.GONE);
+                ivArrowUp.setVisibility(View.GONE);
+                ivArrowDown.setVisibility(View.VISIBLE);
+            }
+        });
 
             // TODO: 26-03-2022 This code occur when voters down arrow click Details window visible
             ivArrowDown.setOnClickListener(new View.OnClickListener() {
@@ -134,14 +145,6 @@ public class MyCandiRecListAdapter extends RecyclerView.Adapter<MyCandiRecListAd
                 }
             });
 
-            btnGoToVote.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    event.setOnCandidateRecClickListener( candidateList.indexOf( (CandidateInfo) itemView.getTag() ) );
-
-                }
-            });
 
         }
 
