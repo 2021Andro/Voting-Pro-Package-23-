@@ -1,11 +1,9 @@
 package com.example.myapplication23.CostumeAdapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -15,39 +13,26 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.myapplication23.Activitys.VotingBallot_Activity;
-import com.example.myapplication23.CostumeClasses.CandidateInfo;
-import com.example.myapplication23.CostumeClasses.MyApp;
-import com.example.myapplication23.Interfaces.MyRecCandidatListEvent;
+import com.example.myapplication23.CostumeClasses.Candidate;
 import com.example.myapplication23.R;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MyCandiRecListAdapter extends RecyclerView.Adapter<MyCandiRecListAdapter.MyViewHolder> {
 
-    private ArrayList<CandidateInfo> candidateList;
+
+    private ArrayList<Candidate> candidateList;
     private Context context;
-    private MyRecCandidatListEvent event;
+    private LinearLayout voting_button_layout;
+    private TextView tvVotingMassageFromUser;
 
-    public MyCandiRecListAdapter(Context context) {
+    public MyCandiRecListAdapter(ArrayList<Candidate> candidateList, Context context) {
+        this.candidateList = candidateList;
         this.context = context;
-        this.event = (MyRecCandidatListEvent) context;
     }
 
-    public void setCandidateList(ArrayList<CandidateInfo> candidateList) {
-
-        if (candidateList != null)
-        {
-
-            this.candidateList = candidateList;
-
-        }else {
-
-            this.candidateList = new ArrayList<>();
-
-        }
-
-    }
 
     @NonNull
     @Override
@@ -60,107 +45,132 @@ public class MyCandiRecListAdapter extends RecyclerView.Adapter<MyCandiRecListAd
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        CandidateInfo candidate = candidateList.get(position);
-        holder.itemView.setTag(candidateList.get(position));
+        Candidate candidate = candidateList.get(position);
+
+        Glide.with(context).asBitmap().load(candidate.getCandidateImage()).into(holder.profile_image);
 
         holder.tvName.setText(candidate.getCandidateName());
         holder.tvStatus.setText(candidate.getCandidateStatus());
+        holder.tvTodaySubject.setText(candidate.getCandidateSubject());
+        holder.tvLike.setText(candidate.getLikeVotes());
+        holder.tvNeutral.setText(candidate.getNeutralVotes());
+        holder.tvDislike.setText(candidate.getDislikeVotes());
 
-        Glide
-                .with(context)
-                .asBitmap()
-                .load(candidate.getCandidateImage())
-                .into(holder.ivProfile);
+        if (candidate.isVoteSubmitted()) {
+            // The voting buttons are invisible
+
+            setOnInvisibleView();
+        } else {
+
+            // The voting buttons are visible
+
+            setOnVisibleView();
+
+
+        }
+
 
     }
+
+    private void setOnInvisibleView() {
+
+        tvVotingMassageFromUser.setVisibility(View.VISIBLE);
+
+    }
+
+    private void setOnVisibleView() {
+
+        tvVotingMassageFromUser.setVisibility(View.GONE);
+
+    }
+
 
     @Override
     public int getItemCount() {
         return candidateList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+
+        private CircleImageView profile_image;
+        private ImageView ivLike, ivNeutral, ivDislike;
+
+        private RatingBar rbCriticsRating;
+        private TextView tvName, tvStatus, tvTodaySubject, tvLike, tvNeutral, tvDislike;
 
 
-        private LinearLayout laShowDeal;
-        private ImageView ivProfile, ivArrowUp, ivArrowDown;
-        private TextView tvName, tvStatus, tvShowStarRating;
-        private RatingBar ratingBar;
-        private Button btnGoToVote;
-
-        public MyViewHolder(@NonNull View itemView)
-        {
+        public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            initializeView(itemView);
 
-            setOnViewsInitialization(itemView);
-
-
-            // TODO: 26-03-2022 This button voter click than voter going Voting ballot activity for votes
-            btnGoToVote.setOnClickListener(new View.OnClickListener() {
+            ivLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    laShowDeal.setVisibility(View.GONE);
-                    ivArrowUp.setVisibility(View.GONE);
-                    ivArrowDown.setVisibility(View.VISIBLE);
-                    event.setOnCandidateRecClickListener( candidateList.indexOf( (CandidateInfo) itemView.getTag() ) );
+                    setOnInvisibleView();
+
+                    ivLike.setImageResource(R.drawable.ic_like);
                 }
             });
 
-            laShowDeal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                laShowDeal.setVisibility(View.GONE);
-                ivArrowUp.setVisibility(View.GONE);
-                ivArrowDown.setVisibility(View.VISIBLE);
-            }
-        });
-
-            // TODO: 26-03-2022 This code occur when voters down arrow click Details window visible
-            ivArrowDown.setOnClickListener(new View.OnClickListener() {
+            ivNeutral.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
+                    setOnInvisibleView();
 
-                    laShowDeal.setVisibility(View.VISIBLE);
-                    ivArrowUp.setVisibility(View.VISIBLE);
-                    ivArrowDown.setVisibility(View.GONE);
+                    ivLike.setClickable(false);
+                    ivNeutral.setClickable(false);
+                    ivDislike.setClickable(false);
 
+                    ivNeutral.setImageResource(R.drawable.ic_neutral);
 
                 }
             });
 
-            // TODO: 26-03-2022 This code occur when voters up arrow click Details window invisible
-            ivArrowUp.setOnClickListener(new View.OnClickListener() {
+            ivDislike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
+                    setOnInvisibleView();
 
-                    laShowDeal.setVisibility(View.GONE);
-                    ivArrowUp.setVisibility(View.GONE);
-                    ivArrowDown.setVisibility(View.VISIBLE);
+                    ivLike.setClickable(false);
+                    ivNeutral.setClickable(false);
+                    ivDislike.setClickable(false);
 
+                    ivDislike.setImageResource(R.drawable.ic_dislike);
                 }
             });
 
 
         }
 
-        // TODO: 26-03-2022 Initialization of views
-        private void setOnViewsInitialization(View itemView) {
+        private void initializeView(View view) {
 
-            laShowDeal = itemView.findViewById(R.id.laShowDeal_CAT_LIST);
-            ivProfile = itemView.findViewById(R.id.ivProfile_CAT_LIST);
-            ivArrowUp = itemView.findViewById(R.id.ivArrowUp_CAT_LIST);
-            ivArrowDown = itemView.findViewById(R.id.ivArrowDown_CAT_LIST);
-            tvName = itemView.findViewById(R.id.tvName_CAT_LIST);
-            tvStatus = itemView.findViewById(R.id.tvStatus_CAT_LIST);
-            tvShowStarRating = itemView.findViewById(R.id.tvShowStarRating_CAT_LIST);
-            ratingBar = itemView.findViewById(R.id.ratingBar1_CAT_LIST);
-            btnGoToVote = itemView.findViewById(R.id.btnGoToVote_CAT_LIST);
+            profile_image = view.findViewById(R.id.profile_image_VB);
+
+            ivLike = view.findViewById(R.id.ivLike_VB);
+            ivNeutral = view.findViewById(R.id.ivNeutral_VB);
+            ivDislike = view.findViewById(R.id.ivDislike_VB);
+
+            rbCriticsRating = view.findViewById(R.id.rbCriticsRating_VB);
+
+            tvName = view.findViewById(R.id.tvName_VB);
+            tvStatus = view.findViewById(R.id.tvStatus_VB);
+            tvTodaySubject = view.findViewById(R.id.tvTodaySubject_VB);
+
+            tvLike = view.findViewById(R.id.tvLike_VB);
+            tvNeutral = view.findViewById(R.id.tvNeutral_VB);
+            tvDislike = view.findViewById(R.id.tvDislike_VB);
+
+            tvVotingMassageFromUser = view.findViewById(R.id.tvVotingMassageFromUser_VB);
+            voting_button_layout = view.findViewById(R.id.voting_button_layout_VB);
+
+
+
         }
 
     }
+
 }

@@ -149,7 +149,7 @@
             android:layout_margin="5dp"
             android:onClick="btnSetOnVoteSubmit"
             android:background="@color/dark_primary_color"
-            app:srcCompat="@drawable/ic_thumb_up"
+            app:srcCompat="@drawable/ic_like"
             tools:ignore="UsingOnClickInXml" />
 
         <ImageButton
@@ -174,7 +174,7 @@
             android:layout_margin="5dp"
             android:background="@color/dark_primary_color"
             android:onClick="btnSetOnVoteSubmit"
-            app:srcCompat="@drawable/ic_thumb_down" />
+            app:srcCompat="@drawable/ic_dislike" />
     </LinearLayout>
 
 </LinearLayout>
