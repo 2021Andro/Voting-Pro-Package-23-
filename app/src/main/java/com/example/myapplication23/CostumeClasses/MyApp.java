@@ -1,12 +1,18 @@
 package com.example.myapplication23.CostumeClasses;
 
 import android.app.Application;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MyApp extends Application {
 
@@ -61,5 +67,15 @@ public class MyApp extends Application {
         myRef = FirebaseDatabase.getInstance();
         myVPS = FirebaseStorage.getInstance();
         myCS = FirebaseFirestore.getInstance();
+    }
+
+    // This function return current date and time
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String getCurrentDateAndTime()
+    {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm");
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        return localDateTime.format(dtf);
     }
 }

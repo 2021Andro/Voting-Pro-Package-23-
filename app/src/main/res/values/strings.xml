@@ -22,4 +22,8 @@
     <string name="this_vote_already_submitted_by">This vote already submitted by</string>
     <string name="enter_the_comment_on_this_subject_of_25_character">Enter the comment on this subject of 25 character</string>
     <string name="going_vote">Going Vote</string>
+    <string name="_1">0</string>
+    <string name="_2">0</string>
+    <string name="_3">0</string>
+    <string name="candidate_status">Candidate Status</string>
 </resources>

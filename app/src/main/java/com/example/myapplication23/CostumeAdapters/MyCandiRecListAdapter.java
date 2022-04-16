@@ -1,6 +1,7 @@
 package com.example.myapplication23.CostumeAdapters;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,23 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication23.CostumeClasses.Candidate;
+import com.example.myapplication23.CostumeClasses.MyApp;
+import com.example.myapplication23.CostumeClasses.Votes;
 import com.example.myapplication23.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -23,10 +35,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MyCandiRecListAdapter extends RecyclerView.Adapter<MyCandiRecListAdapter.MyViewHolder> {
 
 
+    private TextView tvVotingMassageFromUser;
     private ArrayList<Candidate> candidateList;
     private Context context;
-    private LinearLayout voting_button_layout;
-    private TextView tvVotingMassageFromUser;
+    private Candidate candidate;
 
     public MyCandiRecListAdapter(ArrayList<Candidate> candidateList, Context context) {
         this.candidateList = candidateList;
@@ -45,42 +57,19 @@ public class MyCandiRecListAdapter extends RecyclerView.Adapter<MyCandiRecListAd
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        Candidate candidate = candidateList.get(position);
+        candidate = candidateList.get(position);
 
         Glide.with(context).asBitmap().load(candidate.getCandidateImage()).into(holder.profile_image);
 
         holder.tvName.setText(candidate.getCandidateName());
         holder.tvStatus.setText(candidate.getCandidateStatus());
         holder.tvTodaySubject.setText(candidate.getCandidateSubject());
-        holder.tvLike.setText(candidate.getLikeVotes());
-        holder.tvNeutral.setText(candidate.getNeutralVotes());
-        holder.tvDislike.setText(candidate.getDislikeVotes());
 
-        if (candidate.isVoteSubmitted()) {
-            // The voting buttons are invisible
-
-            setOnInvisibleView();
-        } else {
-
-            // The voting buttons are visible
-
-            setOnVisibleView();
+        holder.tvLike.setText(""+candidate.getCandidateLikeVotes());
+        holder.tvNeutral.setText(""+candidate.getCandidateNeutralVotes());
+        holder.tvDislike.setText(""+candidate.getCandidateDislikeVotes());
 
 
-        }
-
-
-    }
-
-    private void setOnInvisibleView() {
-
-        tvVotingMassageFromUser.setVisibility(View.VISIBLE);
-
-    }
-
-    private void setOnVisibleView() {
-
-        tvVotingMassageFromUser.setVisibility(View.GONE);
 
     }
 
@@ -96,52 +85,93 @@ public class MyCandiRecListAdapter extends RecyclerView.Adapter<MyCandiRecListAd
         private ImageView ivLike, ivNeutral, ivDislike;
 
         private RatingBar rbCriticsRating;
-        private TextView tvName, tvStatus, tvTodaySubject, tvLike, tvNeutral, tvDislike;
+        private TextView tvName, tvStatus, tvTodaySubject, tvLike, tvNeutral, tvDislike, tvVotingMassageFromUser;
 
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            // initialization of views
             initializeView(itemView);
 
             ivLike.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onClick(View view) {
 
-                    setOnInvisibleView();
-
+                    saveVoteDbRef("candidateLikeVotes","Like");
                     ivLike.setImageResource(R.drawable.ic_like);
+
                 }
             });
 
             ivNeutral.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onClick(View view) {
 
-                    setOnInvisibleView();
 
-                    ivLike.setClickable(false);
-                    ivNeutral.setClickable(false);
-                    ivDislike.setClickable(false);
-
+                    saveVoteDbRef("candidateNeutralVotes","Neutral");
                     ivNeutral.setImageResource(R.drawable.ic_neutral);
 
                 }
             });
 
             ivDislike.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onClick(View view) {
 
-                    setOnInvisibleView();
-
-                    ivLike.setClickable(false);
-                    ivNeutral.setClickable(false);
-                    ivDislike.setClickable(false);
-
+                    saveVoteDbRef("candidateDislikeVotes","Dislike");
                     ivDislike.setImageResource(R.drawable.ic_dislike);
+
+
                 }
             });
+
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        private void saveVoteDbRef(String filedName, String voteName) {
+
+            DocumentReference cel = MyApp.myCS.collection("Categories "+candidate.getCandidateCategoryName()+" List").document(candidate.getCandidateRefID());
+
+            cel.update(filedName, FieldValue.increment(1));
+            Votes vote = new Votes();
+
+            vote.setVotingCandidateName(candidate.getCandidateName());
+            vote.setVoteName(voteName);
+            vote.setVotingStatus(candidate.getCandidateStatus());
+            vote.setVotingSubject(candidate.getCandidateSubject());
+            vote.setVotingDate(MyApp.getCurrentDateAndTime());
+            vote.setVotingComments("No Comments");
+            vote.setVotes(true);
+
+            DatabaseReference myVotesRef = MyApp.myRef.getReference("Votes");
+
+            myVotesRef
+                    .child(voteName)
+                    .child(candidate.getCandidateRefID())
+                    .child(MyApp.myAuth.getUid().toString())
+                    .setValue(vote)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+
+                            if (task.isSuccessful())
+                            {
+                                tvVotingMassageFromUser.setVisibility(View.VISIBLE);
+
+                                ivLike.setClickable(false);
+                                ivNeutral.setClickable(false);
+                                ivDislike.setClickable(false);
+                            }
+                        }
+                    });
+
+
+
 
 
         }
@@ -163,13 +193,21 @@ public class MyCandiRecListAdapter extends RecyclerView.Adapter<MyCandiRecListAd
             tvLike = view.findViewById(R.id.tvLike_VB);
             tvNeutral = view.findViewById(R.id.tvNeutral_VB);
             tvDislike = view.findViewById(R.id.tvDislike_VB);
-
             tvVotingMassageFromUser = view.findViewById(R.id.tvVotingMassageFromUser_VB);
-            voting_button_layout = view.findViewById(R.id.voting_button_layout_VB);
-
-
 
         }
+
+    }
+
+    private void setOnInvisibleView() {
+
+        tvVotingMassageFromUser.setVisibility(View.VISIBLE);
+
+    }
+
+    private void setOnVisibleView() {
+
+        tvVotingMassageFromUser.setVisibility(View.GONE);
 
     }
 

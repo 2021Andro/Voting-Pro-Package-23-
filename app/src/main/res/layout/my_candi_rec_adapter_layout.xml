@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_CAT_LIST"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -17,8 +18,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image_VB"
-            android:layout_width="81dp"
-            android:layout_height="70dp"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
             android:src="@drawable/ic_launcher_background"
@@ -31,20 +32,22 @@
             android:id="@+id/tvName_VB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Candidate Name"
+            android:layout_toEndOf="@+id/profile_image_VB"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="50dp"
-            android:layout_centerHorizontal="true"
+            android:text="Candidate Name"
             android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvStatus_VB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Candidate Status"
+            android:text="@string/candidate_status"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_below="@id/tvName_VB"
-            android:layout_centerHorizontal="true"
+            android:layout_toEndOf="@+id/profile_image_VB"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="20sp"
             />
 
@@ -99,13 +102,12 @@
             android:id="@+id/tvTodayLabel_VB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/rbCriticsRating_VB"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
             android:text="Voting"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_below="@id/rbCriticsRating_VB"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
-            />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvTodaySubjectLabel_VB"
@@ -166,7 +168,7 @@
                 android:id="@+id/tvLike_VB"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="1000"
+                android:text="@string/_1"
                 android:layout_weight="1"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -179,14 +181,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:clickable="true"
+                android:contentDescription="@string/app_name"
                 android:focusable="true"
-                app:srcCompat="@drawable/ic_neutral_before_vote" />
+                app:srcCompat="@drawable/ic_neutral_before_vote"
+                tools:ignore="TouchTargetSizeCheck" />
 
             <TextView
                 android:id="@+id/tvNeutral_VB"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="1000"
+                android:text="@string/_2"
                 android:layout_weight="1"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -199,14 +203,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:clickable="true"
+                android:contentDescription="@string/app_name"
                 android:focusable="true"
-                app:srcCompat="@drawable/ic_dislike_before_vote" />
+                app:srcCompat="@drawable/ic_dislike_before_vote"
+                tools:ignore="TouchTargetSizeCheck" />
 
             <TextView
                 android:id="@+id/tvDislike_VB"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="1000"
+                android:text="@string/_3"
                 android:layout_weight="1"
                 android:textSize="16sp"
                 android:textStyle="bold"

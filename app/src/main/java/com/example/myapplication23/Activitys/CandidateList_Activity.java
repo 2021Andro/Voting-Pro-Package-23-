@@ -58,17 +58,17 @@ public class CandidateList_Activity extends AppCompatActivity{
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                        List<DocumentSnapshot> documentList = queryDocumentSnapshots.getDocuments();
+                        List<DocumentSnapshot> list=queryDocumentSnapshots.getDocuments();
 
-                        for (DocumentSnapshot snapshot : documentList){
-
-                            Candidate candidate = snapshot.toObject(Candidate.class);
+                        for (DocumentSnapshot documentSnapshot:list)
+                        {
+                            Candidate candidate=documentSnapshot.toObject(Candidate.class);
 
                             candidateList.add(candidate);
 
+                            myCandiAdapter.notifyDataSetChanged();
                         }
 
-                        myCandiAdapter.notifyDataSetChanged();
                     }
                 });
 

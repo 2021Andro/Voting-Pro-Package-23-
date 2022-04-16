@@ -2,8 +2,9 @@ package com.example.myapplication23.CostumeClasses;
 
 import java.io.Serializable;
 
-public class Candidate extends Support_Class implements Serializable
+public class Candidate implements Serializable
 {
+
 
     private String CandidateRefID;
     private String CandidateImage;
@@ -13,13 +14,12 @@ public class Candidate extends Support_Class implements Serializable
     private String CandidateEmailID;
     private String CandidateCategoryName;
     private String CandidateRatingStars;
-    private String CandidateLikeVotes;
-    private String CandidateNeutralVotes;
-    private String CandidateDislikeVotes;
-    private String CandidateAllVotes;
+    private long CandidateLikeVotes;
+    private long CandidateNeutralVotes;
+    private long CandidateDislikeVotes;
+    private long CandidateAllVotes;
     private String CandidateCommentVotes;
     private boolean IsVoteSubmitted;
-
 
     public Candidate() {
     }
@@ -92,35 +92,35 @@ public class Candidate extends Support_Class implements Serializable
         CandidateRatingStars = candidateRatingStars;
     }
 
-    public String getCandidateLikeVotes() {
+    public long getCandidateLikeVotes() {
         return CandidateLikeVotes;
     }
 
-    public void setCandidateLikeVotes(String candidateLikeVotes) {
+    public void setCandidateLikeVotes(long candidateLikeVotes) {
         CandidateLikeVotes = candidateLikeVotes;
     }
 
-    public String getCandidateNeutralVotes() {
+    public long getCandidateNeutralVotes() {
         return CandidateNeutralVotes;
     }
 
-    public void setCandidateNeutralVotes(String candidateNeutralVotes) {
+    public void setCandidateNeutralVotes(long candidateNeutralVotes) {
         CandidateNeutralVotes = candidateNeutralVotes;
     }
 
-    public String getCandidateDislikeVotes() {
+    public long getCandidateDislikeVotes() {
         return CandidateDislikeVotes;
     }
 
-    public void setCandidateDislikeVotes(String candidateDislikeVotes) {
+    public void setCandidateDislikeVotes(long candidateDislikeVotes) {
         CandidateDislikeVotes = candidateDislikeVotes;
     }
 
-    public String getCandidateAllVotes() {
+    public long getCandidateAllVotes() {
         return CandidateAllVotes;
     }
 
-    public void setCandidateAllVotes(String candidateAllVotes) {
+    public void setCandidateAllVotes(long candidateAllVotes) {
         CandidateAllVotes = candidateAllVotes;
     }
 
@@ -138,25 +138,5 @@ public class Candidate extends Support_Class implements Serializable
 
     public void setVoteSubmitted(boolean voteSubmitted) {
         IsVoteSubmitted = voteSubmitted;
-    }
-
-    @Override
-    public String toString() {
-        return "Candidate{" +
-                "CandidateRefID='" + CandidateRefID + '\'' +
-                ", CandidateImage='" + CandidateImage + '\'' +
-                ", CandidateName='" + CandidateName + '\'' +
-                ", CandidateStatus='" + CandidateStatus + '\'' +
-                ", CandidateSubject='" + CandidateSubject + '\'' +
-                ", CandidateEmailID='" + CandidateEmailID + '\'' +
-                ", CandidateCategoryName='" + CandidateCategoryName + '\'' +
-                ", CandidateRatingStars='" + CandidateRatingStars + '\'' +
-                ", CandidateLikeVotes='" + CandidateLikeVotes + '\'' +
-                ", CandidateNeutralVotes='" + CandidateNeutralVotes + '\'' +
-                ", CandidateDislikeVotes='" + CandidateDislikeVotes + '\'' +
-                ", CandidateAllVotes='" + CandidateAllVotes + '\'' +
-                ", CandidateCommentVotes='" + CandidateCommentVotes + '\'' +
-                ", IsVoteSubmitted=" + IsVoteSubmitted +
-                '}';
     }
 }
