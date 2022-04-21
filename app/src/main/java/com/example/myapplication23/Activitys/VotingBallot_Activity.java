@@ -6,15 +6,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication23.CostumeClasses.Candidate;
 import com.example.myapplication23.CostumeClasses.MyApp;
 import com.example.myapplication23.CostumeClasses.Votes;
 import com.example.myapplication23.R;
@@ -25,6 +28,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,42 +42,50 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class VotingBallot_Activity extends AppCompatActivity {
 
     private CircleImageView profileImage;
+    private ImageView ivLike, ivNeutral, ivDislike;
 
-    private TextView tvName, tvStatus, tvTodaySubject, tvAfterVotingMassage;
+    private TextView tvName, tvStatus, tvTodaySubject, tvAfterVotingMassage, tvLike, tvNeutral, tvDislike;
     private EditText etComment;
 
-    private String candiDbId, candiImage, candiName, candiCategoryName, candiStatus, candiSubject, comment, userAuthID;
-    private LinearLayout voting_button_layout;
+    private String comment, userAuthID, TAG="VotingBallot_Activity";
+    private LinearLayout voting_button_layout, show_vote_layout;
     private DatabaseReference votingRef;
     private ValueEventListener addVoteListener;
+    private Candidate candidate;
+    private CollectionReference categoryRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voting_ballot);
 
-        Intent intent = getIntent();
+        candidate = (Candidate) getIntent().getSerializableExtra(MyApp.CANDIDATE);
 
-        candiDbId = intent.getStringExtra(MyApp.CANDIDET_DB_REF);
-        candiImage = intent.getStringExtra(MyApp.CANDIDET_IMAGE);
-        candiName = intent.getStringExtra(MyApp.CANDIDET_NAME);
-        candiCategoryName = intent.getStringExtra(MyApp.CANDIDET_CATEGORY);
-        candiStatus = intent.getStringExtra(MyApp.CANDIDET_STATUS);
-        candiSubject = intent.getStringExtra(MyApp.CANDIDET_SUBJECT);
+        profileImage = findViewById(R.id.profile_image_VB1);
 
-        profileImage = findViewById(R.id.profile_image_VB);
+        tvName = findViewById(R.id.tvName_VB1);
+        tvStatus = findViewById(R.id.tvStatus_VB1);
+        tvTodaySubject = findViewById(R.id.tvTodaySubject_VB1);
 
-        tvName = findViewById(R.id.tvName_VB);
-        tvStatus = findViewById(R.id.tvStatus_VB);
-        tvTodaySubject = findViewById(R.id.tvTodaySubject_VB);
-        tvAfterVotingMassage = findViewById(R.id.tvAfterVotingMassage_VB);
-        etComment = findViewById(R.id.etComment_VB);
+        ivLike = findViewById(R.id.ivLike_VB1);
+        ivNeutral = findViewById(R.id.ivNeutral_VB1);
+        ivDislike = findViewById(R.id.ivDislike_VB1);
 
-        voting_button_layout = findViewById(R.id.voting_button_layout_VB);
+        tvLike = findViewById(R.id.tvLike_VB1);
+        tvNeutral = findViewById(R.id.tvNeutral_VB1);
+        tvDislike = findViewById(R.id.tvDislike_VB1);
+
+        tvAfterVotingMassage = findViewById(R.id.tvAfterVotingMassage_VB1);
+        etComment = findViewById(R.id.etComment_VB1);
+
+        voting_button_layout = findViewById(R.id.voting_button_layout_VB1);
+        show_vote_layout = findViewById(R.id.voting_button_layout_VB11);
 
         userAuthID = MyApp.myAuth.getUid().trim();
 
         votingRef = MyApp.myRef.getReference("Voting");
+
+        categoryRef = MyApp.myCS.collection("Categories " + candidate.getCandidateCategoryName() + " List");
 
         // This is checking user voting submit or not
         addVoteListener = new ValueEventListener() {
@@ -79,20 +94,27 @@ public class VotingBallot_Activity extends AppCompatActivity {
 
                 Votes votes = snapshot.getValue(Votes.class);
 
-                if (
-                        snapshot.child("Like").child(candiDbId).hasChild(userAuthID) ||
-                                snapshot.child("Neutral").child(candiDbId).hasChild(userAuthID) ||
-                                snapshot.child("Dislike").child(candiDbId).hasChild(userAuthID)
+                boolean like = snapshot.child("candidateLikeVotes").child(candidate.getCandidateRefID()).hasChild(userAuthID);
+                boolean neutral = snapshot.child("candidateNeutralVotes").child(candidate.getCandidateRefID()).hasChild(userAuthID);
+                boolean dislike = snapshot.child("candidateDislikeVotes").child(candidate.getCandidateRefID()).hasChild(userAuthID);
 
-                ) {
+                if (like) {
                     // User already voting completed
 
-                    Log.d(MyApp.myTag, "Subject : " + votes.getVotingSubject());
-                    setVotinglayoutVisible();
+                    setViolatingVisible(1);
+
+                } else if (neutral) {
+                    // User already voting completed
+
+                    setViolatingVisible(2);
+
+                } else if (dislike) {
+                    // User already voting completed
+                    setViolatingVisible(3);
 
                 } else {
                     // User voting is not completed
-                    setVotinglayoutInvisible();
+                    setViolatingInvisible();
 
                 }
 
@@ -112,34 +134,81 @@ public class VotingBallot_Activity extends AppCompatActivity {
         super.onResume();
 
 
-        tvName.setText(candiName);
-        tvStatus.setText(candiStatus);
-        tvTodaySubject.setText(candiSubject);
+        tvName.setText(candidate.getCandidateName());
+        tvStatus.setText(candidate.getCandidateStatus());
+        tvTodaySubject.setText(candidate.getCandidateSubject());
 
         Glide
                 .with(getApplicationContext())
                 .asBitmap()
-                .load(candiImage)
+                .load(candidate.getCandidateImage())
                 .into(profileImage);
 
 
         votingRef.addValueEventListener(addVoteListener);
 
+
+        categoryRef
+                .document(candidate.getCandidateRefID())
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                        Candidate candidate1 = value.toObject(Candidate.class);
+
+
+                        long like = candidate1.getCandidateLikeVotes();
+                        long neutral = candidate1.getCandidateNeutralVotes();
+                        long dislike = candidate1.getCandidateDislikeVotes();
+
+                        tvLike.setText(""+like);
+                        tvNeutral.setText(""+neutral);
+                        tvDislike.setText(""+dislike);
+                    }
+                });
+
+
+
     }
 
     // This function have voting layout visible ( Voting has not been done )
-    private void setVotinglayoutVisible() {
-        voting_button_layout.setVisibility(View.GONE);
+    private void setViolatingVisible(int position) {
+
+        show_vote_layout.setVisibility(View.VISIBLE);
         tvAfterVotingMassage.setVisibility(View.VISIBLE);
+        voting_button_layout.setVisibility(View.GONE);
         etComment.setVisibility(View.GONE);
+
+        switch (position)
+        {
+
+            case 1:
+
+                ivLike.setImageResource(R.drawable.ic_like);
+
+                break;
+
+            case 2:
+
+                ivNeutral.setImageResource(R.drawable.ic_neutral);
+
+                break;
+
+            case 3:
+
+                ivDislike.setImageResource(R.drawable.ic_dislike);
+
+                break;
+        }
 
     }
 
     // This function have voting not layout visible ( Voting has been done )
-    private void setVotinglayoutInvisible() {
+    private void setViolatingInvisible() {
+        etComment.setVisibility(View.VISIBLE);
         voting_button_layout.setVisibility(View.VISIBLE);
         tvAfterVotingMassage.setVisibility(View.GONE);
-        etComment.setVisibility(View.VISIBLE);
+        show_vote_layout.setVisibility(View.GONE);
 
     }
 
@@ -168,21 +237,21 @@ public class VotingBallot_Activity extends AppCompatActivity {
                 case R.id.btnLike_VB:
 
                     Toast.makeText(this, "Like", Toast.LENGTH_SHORT).show();
-                    setVoteRecord("Like");
+                    setVoteRecord("candidateLikeVotes");
 
                     break;
 
                 case R.id.btnNeutral_VB:
 
-                    Toast.makeText(this, "Like", Toast.LENGTH_SHORT).show();
-                    setVoteRecord("Neutral");
+                    Toast.makeText(this, "Neutral", Toast.LENGTH_SHORT).show();
+                    setVoteRecord("candidateNeutralVotes");
 
                     break;
 
                 case R.id.btnDislike_VB:
 
                     Toast.makeText(this, "Dislike", Toast.LENGTH_SHORT).show();
-                    setVoteRecord("Dislike");
+                    setVoteRecord("candidateDislikeVotes");
 
                     break;
 
@@ -204,16 +273,54 @@ public class VotingBallot_Activity extends AppCompatActivity {
 
         Votes vote = new Votes();
 
-        vote.setVotingCandidateName(candiName);
-        vote.setVotingStatus(candiStatus);
-        vote.setVotingSubject(candiSubject);
+        vote.setVotingCandidateName(candidate.getCandidateName());
+        vote.setVotingStatus(candidate.getCandidateStatus());
+        vote.setVotingSubject(candidate.getCandidateSubject());
         vote.setVotingDate(votingDateTime);
         vote.setVotingComments(comment);
         vote.setVotes(true);
 
-        setVoteRecordHistoryDbRef(vote, voteName);
+        // setVoteRecordHistoryDbRef(vote, voteName);
 
         setVoteRecordDbRef(vote, voteName);
+
+
+    }
+
+    private void setVoteRecordDbRef(Votes vote, String votingName) {
+
+
+
+        votingRef
+                .child(votingName)
+                .child(candidate.getCandidateRefID())
+                .child(MyApp.myAuth.getUid().toString())
+                .setValue(vote)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isSuccessful()) {
+
+
+                            categoryRef.document(candidate.getCandidateRefID()).update(votingName, FieldValue.increment(1));
+
+
+
+                            Intent intent = new Intent(getApplicationContext(), Home_Activity.class);
+
+                            startActivity(intent);
+
+
+                        } else {
+
+                            setViolatingVisible(0);
+
+                            Toast.makeText(VotingBallot_Activity.this, "Sum problem for summit vote", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
 
 
     }
@@ -229,35 +336,6 @@ public class VotingBallot_Activity extends AppCompatActivity {
 
         CollectionReference user_voting_history = MyApp.myCS.collection("User Voting History");
 
-
-//
-//        if ()
-//        {
-//
-//            day = weekOfDay[0];
-//
-//        }else if (weekOfDay[1].equals(currentDay))
-//        {
-//
-//            day = weekOfDay[0];
-//
-//
-//        }else if (weekOfDay[2].equals(currentDay))
-//        {
-//
-//        }else if (weekOfDay[3].equals(currentDay))
-//        {
-//
-//        }else if (weekOfDay[4].equals(currentDay))
-//        {
-//
-//        }else if (weekOfDay[5].equals(currentDay))
-//        {
-//
-//        }else if (weekOfDay[6].equals(currentDay))
-//        {
-//
-//        }
         user_voting_history
                 .document(userId.toString())
                 .collection(currentDay)
@@ -267,39 +345,4 @@ public class VotingBallot_Activity extends AppCompatActivity {
 
     }
 
-
-    private void setVoteRecordDbRef(Votes vote, String votingName) {
-
-
-        votingRef
-                .child(votingName)
-                .child(candiDbId)
-                .child(MyApp.myAuth.getUid().toString())
-                .setValue(vote)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        if (task.isSuccessful()) {
-
-
-                            setVotinglayoutInvisible();
-
-                            Intent intent = new Intent(getApplicationContext(), Home_Activity.class);
-
-                            startActivity(intent);
-
-
-                        } else {
-
-                            setVotinglayoutVisible();
-
-                            Toast.makeText(VotingBallot_Activity.this, "Sum problem for summit vote", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                });
-
-
-    }
 }
