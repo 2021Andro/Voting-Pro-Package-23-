@@ -8,13 +8,6 @@
     android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="35sp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:text="Profile" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -63,6 +56,26 @@
             app:endIconMode="clear_text" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tfPinCode_Update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:hint="@string/enter_your_pin_code_registration"
+        app:startIconContentDescription="Enter Your Pin Code"
+        app:startIconDrawable="@drawable/ic_pin_code">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPinCode_Update"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            app:endIconMode="clear_text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <RadioGroup
         android:id="@+id/rgGander_Update"
         android:layout_width="wrap_content"
@@ -80,12 +93,12 @@
             android:text="@string/male_registration"/>
 
         <RadioButton
-            android:id="@+id/radio_button_Ather_Update"
+            android:id="@+id/radio_button_Other_Update"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:buttonTint="@color/primary_text_color"
-            android:text="@string/ather_registration"/>
+            android:text="@string/other_registration"/>
 
 
 

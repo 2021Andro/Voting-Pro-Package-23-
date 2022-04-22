@@ -6,7 +6,7 @@
     <string name="enter_your_phone_number_registration">Enter Your Phone Number</string>
     <string name="enter_your_pin_code_registration">Enter Your Pin Code</string>
     <string name="male_registration">Male</string>
-    <string name="ather_registration">Ather</string>
+    <string name="other_registration">Other</string>
     <string name="female_registration">Female</string>
     <string name="enter_your_otp">Enter Your OTP</string>
     <string name="set_image_btn">Set Image</string>

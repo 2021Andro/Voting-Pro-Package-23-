@@ -34,9 +34,9 @@ public class Register_Activity extends AppCompatActivity {
 
     private RadioGroup rgGander;
 
-    private String name, emailId, phoneNumber, pinCode, gander;
-
     private boolean isGanderSelected = false;
+
+    private String name, emailId, phoneNumber, pinCode, gander;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +52,17 @@ public class Register_Activity extends AppCompatActivity {
         }
 
         tfName = findViewById(R.id.tfName_Register);
-        tfEmailId = findViewById(R.id.tfEmail_Register);
-        tfPhoneNumber = findViewById(R.id.tfPhoneNumber_Register);
-        tfPinCode = findViewById(R.id.tfPinCode_Register);
-
         etName = findViewById(R.id.etName_Register);
+
+        tfEmailId = findViewById(R.id.tfEmail_Register);
         etEmailId = findViewById(R.id.etEmail_Register);
+
+        tfPhoneNumber = findViewById(R.id.tfPhoneNumber_Register);
         etPhoneNumber = findViewById(R.id.etPhoneNumber_Register);
+
+        tfPinCode = findViewById(R.id.tfPinCode_Register);
         etPinCode = findViewById(R.id.etPinCode_Register);
+
         rgGander = findViewById(R.id.rgGander_Register);
 
         ccp = findViewById(R.id.ccp_Register);
@@ -79,9 +82,9 @@ public class Register_Activity extends AppCompatActivity {
 
                         break;
 
-                    case R.id.radio_button_Ather:
+                    case R.id.radio_button_Other:
 
-                        gander = "Ather";
+                        gander = "Other";
                         isGanderSelected = true;
 
                         break;

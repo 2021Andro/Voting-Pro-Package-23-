@@ -129,12 +129,12 @@
             android:text="@string/male_registration"/>
 
         <RadioButton
-            android:id="@+id/radio_button_Ather"
+            android:id="@+id/radio_button_Other"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:buttonTint="@color/primary_text_color"
-            android:text="@string/ather_registration"/>
+            android:text="@string/other_registration"/>
 
 
 
