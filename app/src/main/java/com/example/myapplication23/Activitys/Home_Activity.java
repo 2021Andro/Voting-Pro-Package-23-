@@ -114,7 +114,7 @@ public class Home_Activity extends AppCompatActivity implements MyRecEvent {
         // using toolbar as ActionBar
         setSupportActionBar(toolbar);
 
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_hader, R.string.close_hader);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_header, R.string.close_header);
 
         drawerLayout.addDrawerListener(toggle);
 
@@ -125,6 +125,7 @@ public class Home_Activity extends AppCompatActivity implements MyRecEvent {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 switch (item.getItemId()) {
+
                     case R.id.miSetting:
 
                         Toast.makeText(Home_Activity.this, "Settings", Toast.LENGTH_SHORT).show();
@@ -132,6 +133,14 @@ public class Home_Activity extends AppCompatActivity implements MyRecEvent {
                         startActivity(new Intent(getApplicationContext(), Setting_Activity.class));
 
                         break;
+                    case R.id.miUserVotingHistory:
+
+                        Toast.makeText(Home_Activity.this, "History", Toast.LENGTH_SHORT).show();
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        startActivity(new Intent(getApplicationContext(), User_Voting_History_Activity.class));
+
+                        break;
+
 
                 }
 

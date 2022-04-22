@@ -256,43 +256,89 @@ public class User_Profile_Update_Fragment extends Fragment {
 
         } else {
 
-
-            StorageReference profileFolder = MyApp.myVPS.getReference();
-
-            StorageReference user_profile_images = profileFolder.child("User Profile Images");
-
-            StorageReference user_image_id = user_profile_images.child(UUID.randomUUID().toString());
-
-            UploadTask uploadTask = user_image_id.putFile(imageUri);
-
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-
-                    user_image_id
-                            .getDownloadUrl()
-                            .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-
-                                    String imUri = uri.toString();
-                                    updateUserInfo.put("userImage", imUri);
-
-                                    userInfoRef.update(updateUserInfo);
-                                    getActivity().startActivity(new Intent(getContext(), Home_Activity.class));
-                                    getActivity().finish();
+            if (userInfoOld.getUserImage() == null) {
 
 
 
-                                }
-                            });
+                StorageReference profileFolder = MyApp.myVPS.getReference();
+
+                StorageReference user_profile_images = profileFolder.child("User Profile Images");
+
+                StorageReference user_image_id = user_profile_images.child(UUID.randomUUID().toString());
+
+                UploadTask uploadTask = user_image_id.putFile(imageUri);
+
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
+                        user_image_id
+                                .getDownloadUrl()
+                                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+
+                                        String imUri = uri.toString();
+                                        updateUserInfo.put("userImage", null);
+
+                                        userInfoRef.update(updateUserInfo);
+                                        getActivity().startActivity(new Intent(getContext(), Home_Activity.class));
+                                        getActivity().finish();
+
+
+
+                                    }
+                                });
 
 
 
 
-                }
-            });
+                    }
+                });
+
+
+            } else {
+
+
+
+                StorageReference profileFolder = MyApp.myVPS.getReference();
+
+                StorageReference user_profile_images = profileFolder.child("User Profile Images");
+
+                StorageReference user_image_id = user_profile_images.child(UUID.randomUUID().toString());
+
+                UploadTask uploadTask = user_image_id.putFile(imageUri);
+
+                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+
+                        user_image_id
+                                .getDownloadUrl()
+                                .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+
+                                        String imUri = uri.toString();
+                                        updateUserInfo.put("userImage", imUri);
+
+                                        userInfoRef.update(updateUserInfo);
+                                        getActivity().startActivity(new Intent(getContext(), Home_Activity.class));
+                                        getActivity().finish();
+
+
+
+                                    }
+                                });
+
+
+                    }
+                });
+
+
+            }
 
         }
 
