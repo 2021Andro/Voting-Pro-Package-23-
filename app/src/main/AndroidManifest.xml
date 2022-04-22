@@ -17,7 +17,7 @@
             android:name=".Activitys.CandidateList_Activity"
             android:exported="false" />
         <activity
-            android:name=".Activitys.Setting_Activity"
+            android:name=".Activitys.Settings.Setting_Activity"
             android:exported="false" />
         <activity
             android:name=".Activitys.Home_Activity"

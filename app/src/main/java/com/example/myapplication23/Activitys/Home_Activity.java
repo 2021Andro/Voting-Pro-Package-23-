@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication23.Activitys.Settings.Setting_Activity;
 import com.example.myapplication23.CostumeAdapters.MyCatRecAdapter;
 import com.example.myapplication23.CostumeClasses.Category;
 import com.example.myapplication23.CostumeClasses.MyApp;
@@ -126,8 +127,9 @@ public class Home_Activity extends AppCompatActivity implements MyRecEvent {
                 switch (item.getItemId()) {
                     case R.id.miSetting:
 
-                        Toast.makeText(Home_Activity.this, "Home", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Home_Activity.this, "Settings", Toast.LENGTH_SHORT).show();
                         drawerLayout.closeDrawer(GravityCompat.START);
+                        startActivity(new Intent(getApplicationContext(), Setting_Activity.class));
 
                         break;
 

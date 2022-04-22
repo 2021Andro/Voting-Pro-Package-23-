@@ -1,9 +1,10 @@
-package com.example.myapplication23.Activitys;
+package com.example.myapplication23.Activitys.Settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.example.myapplication23.Fragments.Settings_Fragments.Setting_Home_Fragment;
 import com.example.myapplication23.R;
 
 public class Setting_Activity extends AppCompatActivity {
@@ -12,5 +13,8 @@ public class Setting_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        getSupportFragmentManager().beginTransaction().add(R.id.fcHome, new Setting_Home_Fragment()).commit();
+
     }
 }
