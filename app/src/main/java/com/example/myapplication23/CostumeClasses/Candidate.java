@@ -14,10 +14,10 @@ public class Candidate implements Serializable
     private String CandidateEmailID;
     private String CandidateCategoryName;
     private String CandidateRatingStars;
-    private long CandidateLikeVotes;
-    private long CandidateNeutralVotes;
-    private long CandidateDislikeVotes;
-    private long CandidateAllVotes;
+    private long LikeVotes;
+    private long NeutralVotes;
+    private long DislikeVotes;
+    private long AllVotes;
     private String CandidateCommentVotes;
     private boolean IsVoteSubmitted;
 
@@ -92,36 +92,36 @@ public class Candidate implements Serializable
         CandidateRatingStars = candidateRatingStars;
     }
 
-    public long getCandidateLikeVotes() {
-        return CandidateLikeVotes;
+    public long getLikeVotes() {
+        return LikeVotes;
     }
 
-    public void setCandidateLikeVotes(long candidateLikeVotes) {
-        CandidateLikeVotes = candidateLikeVotes;
+    public void setLikeVotes(long likeVotes) {
+        LikeVotes = likeVotes;
     }
 
-    public long getCandidateNeutralVotes() {
-        return CandidateNeutralVotes;
+    public long getNeutralVotes() {
+        return NeutralVotes;
     }
 
-    public void setCandidateNeutralVotes(long candidateNeutralVotes) {
-        CandidateNeutralVotes = candidateNeutralVotes;
+    public void setNeutralVotes(long neutralVotes) {
+        NeutralVotes = neutralVotes;
     }
 
-    public long getCandidateDislikeVotes() {
-        return CandidateDislikeVotes;
+    public long getDislikeVotes() {
+        return DislikeVotes;
     }
 
-    public void setCandidateDislikeVotes(long candidateDislikeVotes) {
-        CandidateDislikeVotes = candidateDislikeVotes;
+    public void setDislikeVotes(long dislikeVotes) {
+        DislikeVotes = dislikeVotes;
     }
 
-    public long getCandidateAllVotes() {
-        return CandidateAllVotes;
+    public long getAllVotes() {
+        return AllVotes;
     }
 
-    public void setCandidateAllVotes(long candidateAllVotes) {
-        CandidateAllVotes = candidateAllVotes;
+    public void setAllVotes(long allVotes) {
+        AllVotes = allVotes;
     }
 
     public String getCandidateCommentVotes() {

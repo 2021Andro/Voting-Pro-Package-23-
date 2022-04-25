@@ -13,11 +13,16 @@
         <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/activity_register.xml" value="0.22" />
         <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/activity_set_profile_image.xml" value="0.15364583333333334" />
         <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/activity_setting.xml" value="0.22" />
-        <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/activity_user_voting_history.xml" value="0.1" />
+        <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/activity_splash.xml" value="0.1" />
+        <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/activity_user_voting_history.xml" value="0.18" />
         <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/activity_voting_ballot.xml" value="0.14583333333333334" />
+        <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/fragment_list__voting__candidate_.xml" value="0.22" />
         <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/fragment_setting__home_.xml" value="0.15364583333333334" />
+        <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/fragment_u_v_l__cat__list_.xml" value="0.15364583333333334" />
         <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/fragment_user__profile__update_.xml" value="0.15364583333333334" />
+        <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/fragment_voting__candidate__detail_.xml" value="0.18" />
         <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/my_candi_rec_adapter_layout.xml" value="0.25" />
+        <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/my_voting_list_history_adapter.xml" value="0.18" />
         <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/layout/rv_setting_adapter_layout.xml" value="0.22" />
         <entry key="..\:/GitHub Import Project/Voting Pro/app/src/main/res/menu/my_menu_hader_home.xml" value="0.1" />
         <entry key="..\:/My Android Projects/1, Voting Pro/app/src/main/res/drawable/ic_neutral.xml" value="0.114" />

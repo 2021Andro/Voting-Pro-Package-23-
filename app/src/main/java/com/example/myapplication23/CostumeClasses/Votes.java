@@ -4,25 +4,27 @@ import java.io.Serializable;
 
 public class Votes implements Serializable {
 
+    private String VotingCandidateDbRef;
     private String VotingCandidateName;
     private String VotingStatus;
     private String VotingSubject;
-    private String VotingDate;
+    private String VotingDay;
+    private String VotingTime;
     private String VoteName;
+    private String VoteCategoryName;
     private String VotingComments;
     private boolean IsVotes;
 
     public Votes() {
     }
 
-    public Votes(String votingCandidateName, String votingStatus, String votingSubject, String votingDate, String voteName, String votingComments, boolean isVotes) {
-        VotingCandidateName = votingCandidateName;
-        VotingStatus = votingStatus;
-        VotingSubject = votingSubject;
-        VotingDate = votingDate;
-        VoteName = voteName;
-        VotingComments = votingComments;
-        IsVotes = isVotes;
+
+    public String getVotingCandidateDbRef() {
+        return VotingCandidateDbRef;
+    }
+
+    public void setVotingCandidateDbRef(String votingCandidateDbRef) {
+        VotingCandidateDbRef = votingCandidateDbRef;
     }
 
     public String getVotingCandidateName() {
@@ -49,12 +51,20 @@ public class Votes implements Serializable {
         VotingSubject = votingSubject;
     }
 
-    public String getVotingDate() {
-        return VotingDate;
+    public String getVotingDay() {
+        return VotingDay;
     }
 
-    public void setVotingDate(String votingDate) {
-        VotingDate = votingDate;
+    public void setVotingDay(String votingDay) {
+        VotingDay = votingDay;
+    }
+
+    public String getVotingTime() {
+        return VotingTime;
+    }
+
+    public void setVotingTime(String votingTime) {
+        VotingTime = votingTime;
     }
 
     public String getVoteName() {
@@ -63,6 +73,14 @@ public class Votes implements Serializable {
 
     public void setVoteName(String voteName) {
         VoteName = voteName;
+    }
+
+    public String getVoteCategoryName() {
+        return VoteCategoryName;
+    }
+
+    public void setVoteCategoryName(String voteCategoryName) {
+        VoteCategoryName = voteCategoryName;
     }
 
     public String getVotingComments() {
@@ -79,5 +97,21 @@ public class Votes implements Serializable {
 
     public void setVotes(boolean votes) {
         IsVotes = votes;
+    }
+
+    @Override
+    public String toString() {
+        return "Votes{" +
+                "VotingCandidateDbRef='" + VotingCandidateDbRef + '\'' +
+                ", VotingCandidateName='" + VotingCandidateName + '\'' +
+                ", VotingStatus='" + VotingStatus + '\'' +
+                ", VotingSubject='" + VotingSubject + '\'' +
+                ", VotingDay='" + VotingDay + '\'' +
+                ", VotingTime='" + VotingTime + '\'' +
+                ", VoteName='" + VoteName + '\'' +
+                ", VoteCategoryName='" + VoteCategoryName + '\'' +
+                ", VotingComments='" + VotingComments + '\'' +
+                ", IsVotes=" + IsVotes +
+                '}';
     }
 }

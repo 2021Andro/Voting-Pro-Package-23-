@@ -3,7 +3,6 @@ package com.example.myapplication23.Activitys;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,10 +32,6 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class VotingBallot_Activity extends AppCompatActivity {
@@ -46,13 +41,14 @@ public class VotingBallot_Activity extends AppCompatActivity {
 
     private TextView tvName, tvStatus, tvTodaySubject, tvAfterVotingMassage, tvLike, tvNeutral, tvDislike;
     private EditText etComment;
-
+    private String votingName;
     private String comment, userAuthID, TAG="VotingBallot_Activity";
     private LinearLayout voting_button_layout, show_vote_layout;
     private DatabaseReference votingRef;
-    private ValueEventListener addVoteListener;
+    private ValueEventListener checkVoteListener;
     private Candidate candidate;
     private CollectionReference categoryRef;
+    private OnCompleteListener<Void> submitVoteListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,18 +81,18 @@ public class VotingBallot_Activity extends AppCompatActivity {
 
         votingRef = MyApp.myRef.getReference("Voting");
 
-        categoryRef = MyApp.myCS.collection("Categories " + candidate.getCandidateCategoryName() + " List");
+        categoryRef = MyApp.myCS.collection("Categories "+candidate.getCandidateCategoryName()+" List");
 
         // This is checking user voting submit or not
-        addVoteListener = new ValueEventListener() {
+        checkVoteListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 Votes votes = snapshot.getValue(Votes.class);
 
-                boolean like = snapshot.child("candidateLikeVotes").child(candidate.getCandidateRefID()).hasChild(userAuthID);
-                boolean neutral = snapshot.child("candidateNeutralVotes").child(candidate.getCandidateRefID()).hasChild(userAuthID);
-                boolean dislike = snapshot.child("candidateDislikeVotes").child(candidate.getCandidateRefID()).hasChild(userAuthID);
+                boolean like = snapshot.child("likeVotes").child(candidate.getCandidateRefID()).hasChild(userAuthID);
+                boolean neutral = snapshot.child("neutralVotes").child(candidate.getCandidateRefID()).hasChild(userAuthID);
+                boolean dislike = snapshot.child("dislikeVotes").child(candidate.getCandidateRefID()).hasChild(userAuthID);
 
                 if (like) {
                     // User already voting completed
@@ -126,6 +122,32 @@ public class VotingBallot_Activity extends AppCompatActivity {
             }
         };
 
+        submitVoteListener = new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if (task.isSuccessful()) {
+
+
+                    categoryRef.document(candidate.getCandidateRefID()).update(votingName, FieldValue.increment(1));
+
+
+
+                    Intent intent = new Intent(getApplicationContext(), Home_Activity.class);
+
+                    startActivity(intent);
+
+
+                } else {
+
+                    setViolatingVisible(0);
+
+                    Toast.makeText(VotingBallot_Activity.this, "Sum problem for summit vote", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        };
+
 
     }
 
@@ -145,7 +167,7 @@ public class VotingBallot_Activity extends AppCompatActivity {
                 .into(profileImage);
 
 
-        votingRef.addValueEventListener(addVoteListener);
+        votingRef.addValueEventListener(checkVoteListener);
 
 
         categoryRef
@@ -157,9 +179,9 @@ public class VotingBallot_Activity extends AppCompatActivity {
                         Candidate candidate1 = value.toObject(Candidate.class);
 
 
-                        long like = candidate1.getCandidateLikeVotes();
-                        long neutral = candidate1.getCandidateNeutralVotes();
-                        long dislike = candidate1.getCandidateDislikeVotes();
+                        long like = candidate1.getLikeVotes();
+                        long neutral = candidate1.getNeutralVotes();
+                        long dislike = candidate1.getDislikeVotes();
 
                         tvLike.setText(""+like);
                         tvNeutral.setText(""+neutral);
@@ -237,21 +259,28 @@ public class VotingBallot_Activity extends AppCompatActivity {
                 case R.id.btnLike_VB:
 
                     Toast.makeText(this, "Like", Toast.LENGTH_SHORT).show();
-                    setVoteRecord("candidateLikeVotes");
+                    votingName = "likeVotes";
+                    setVoteRecord();
 
                     break;
 
                 case R.id.btnNeutral_VB:
 
                     Toast.makeText(this, "Neutral", Toast.LENGTH_SHORT).show();
-                    setVoteRecord("candidateNeutralVotes");
+
+                    votingName = "neutralVotes";
+
+                    setVoteRecord();
 
                     break;
 
                 case R.id.btnDislike_VB:
 
                     Toast.makeText(this, "Dislike", Toast.LENGTH_SHORT).show();
-                    setVoteRecord("candidateDislikeVotes");
+
+                    votingName = "dislikeVotes";
+
+                    setVoteRecord();
 
                     break;
 
@@ -262,32 +291,28 @@ public class VotingBallot_Activity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void setVoteRecord(String voteName) {
-
-
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm");
-        LocalDateTime localDateTime = LocalDateTime.now();
-
-        String votingDateTime = localDateTime.format(dtf);
+    private void setVoteRecord() {
 
 
         Votes vote = new Votes();
 
+        vote.setVotingCandidateDbRef(candidate.getCandidateRefID());
         vote.setVotingCandidateName(candidate.getCandidateName());
         vote.setVotingStatus(candidate.getCandidateStatus());
         vote.setVotingSubject(candidate.getCandidateSubject());
-        vote.setVotingDate(votingDateTime);
+        vote.setVotingDay(MyApp.getCurrentDay());
+        vote.setVotingTime(MyApp.getCurrentTime());
+        vote.setVoteName(votingName);
+        vote.setVoteCategoryName(candidate.getCandidateCategoryName());
         vote.setVotingComments(comment);
         vote.setVotes(true);
 
-        // setVoteRecordHistoryDbRef(vote, voteName);
-
-        setVoteRecordDbRef(vote, voteName);
+        setVoteRecordDbRef(vote);
 
 
     }
 
-    private void setVoteRecordDbRef(Votes vote, String votingName) {
+    private void setVoteRecordDbRef(Votes vote) {
 
 
 
@@ -296,53 +321,10 @@ public class VotingBallot_Activity extends AppCompatActivity {
                 .child(candidate.getCandidateRefID())
                 .child(MyApp.myAuth.getUid().toString())
                 .setValue(vote)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        if (task.isSuccessful()) {
-
-
-                            categoryRef.document(candidate.getCandidateRefID()).update(votingName, FieldValue.increment(1));
-
-
-
-                            Intent intent = new Intent(getApplicationContext(), Home_Activity.class);
-
-                            startActivity(intent);
-
-
-                        } else {
-
-                            setViolatingVisible(0);
-
-                            Toast.makeText(VotingBallot_Activity.this, "Sum problem for summit vote", Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                });
+                .addOnCompleteListener(submitVoteListener);
 
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void setVoteRecordHistoryDbRef(Votes vote, String voteName) {
-
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm");
-        LocalDateTime localDateTime = LocalDateTime.now();
-
-        String currentDay = LocalDate.now().getDayOfWeek().name();
-        String userId = MyApp.myAuth.getUid();
-
-        CollectionReference user_voting_history = MyApp.myCS.collection("User Voting History");
-
-        user_voting_history
-                .document(userId.toString())
-                .collection(currentDay)
-                .document(localDateTime.toString())
-                .set(vote);
-
-
-    }
 
 }

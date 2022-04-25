@@ -31,4 +31,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="settings_name">Settings Name</string>
     <string name="update_profile">Update Profile</string>
+    <string name="show_day">Show day</string>
+    <string name="no_vote_submit_on_this_day">No vote submit on this day</string>
 </resources>

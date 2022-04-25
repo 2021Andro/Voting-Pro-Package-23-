@@ -69,11 +69,21 @@ public class MyApp extends Application {
         myCS = FirebaseFirestore.getInstance();
     }
 
-    // This function return current date and time
+    // This function return current day
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static String getCurrentDateAndTime()
+    public static String getCurrentDay()
     {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        return localDateTime.format(dtf);
+    }
+
+    // This function return current time
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String getCurrentTime()
+    {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("hh:mm");
         LocalDateTime localDateTime = LocalDateTime.now();
 
         return localDateTime.format(dtf);
