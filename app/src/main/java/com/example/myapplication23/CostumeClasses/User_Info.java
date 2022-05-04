@@ -2,7 +2,7 @@ package com.example.myapplication23.CostumeClasses;
 
 import java.io.Serializable;
 
-public class User_Info extends Support_Class implements Serializable
+public class User_Info implements Serializable
 {
     private String UserID;
     private String UserImage;
@@ -11,6 +11,11 @@ public class User_Info extends Support_Class implements Serializable
     private String UserPhoneNumber;
     private String UserPinCode;
     private String UserGander;
+    private long LikeVotes;
+    private long NeutralVotes;
+    private long DislikeVotes;
+    private long AllVotes;
+    private boolean IsVoteSubmitted;
 
     public User_Info() {
     }

@@ -194,7 +194,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_like_before_vote" />
+            app:srcCompat="@drawable/ic_like" />
 
         <TextView
             android:id="@+id/tvLike_VB1"
@@ -215,7 +215,7 @@
             android:clickable="true"
             android:contentDescription="@string/app_name"
             android:focusable="true"
-            app:srcCompat="@drawable/ic_neutral_before_vote"
+            app:srcCompat="@drawable/ic_neutral"
             tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
@@ -237,7 +237,7 @@
             android:clickable="true"
             android:contentDescription="@string/app_name"
             android:focusable="true"
-            app:srcCompat="@drawable/ic_dislike_before_vote"
+            app:srcCompat="@drawable/ic_dislike"
             tools:ignore="TouchTargetSizeCheck" />
 
         <TextView

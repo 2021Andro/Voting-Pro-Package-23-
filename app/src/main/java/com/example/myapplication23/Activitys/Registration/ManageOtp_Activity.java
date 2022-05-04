@@ -126,7 +126,7 @@ public class ManageOtp_Activity extends AppCompatActivity {
 
     private void registerRecord(String dbId) {
 
-        user.setDbRef(dbId);
+        user.setUserID(dbId);
 
         MyApp.myCS
                 .collection(MyApp.DB_COL_NAME_USER_INFO)

@@ -14,92 +14,70 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication23.CostumeClasses.Candidate;
 import com.example.myapplication23.Interfaces.MyRecCandidatListEvent;
 import com.example.myapplication23.R;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MyCandiRecListAdapter extends RecyclerView.Adapter<MyCandiRecListAdapter.MyViewHolder> {
+public class MyCandiRecListAdapter extends FirestoreRecyclerAdapter<Candidate, MyCandiRecListAdapter.MyViewHolder>  {
 
-
-    private ArrayList<Candidate> candidateList;
-    private Context context;
-    private Candidate candidate;
     private MyRecCandidatListEvent event;
 
-    public MyCandiRecListAdapter(ArrayList<Candidate> candidateList, Context context) {
-        this.candidateList = candidateList;
-        this.context = context;
-        this.event = (MyRecCandidatListEvent) context;
+    /**
+     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
+     * FirestoreRecyclerOptions} for configuration options.
+     *
+     * @param options
+     */
+    public MyCandiRecListAdapter(@NonNull FirestoreRecyclerOptions<Candidate> options, MyRecCandidatListEvent event) {
+        super(options);
+
+        this.event = event;
+
     }
 
+    @Override
+    protected void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull Candidate candidate) {
+
+        holder.tvCandidateName.setText(candidate.getCandidateName());
+        holder.tvStatus.setText(candidate.getCandidateStatus());
+
+        Glide.with(holder.itemView.getContext()).asBitmap().load(candidate.getCandidateImage()).into(holder.profileImage);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                event.setOnCandidateRecClickListener(candidate);
+            }
+        });
+
+    }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_candi_rec_adapter_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_candi_rec_adapter_layout,parent, false);
         return new MyViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public class MyViewHolder extends RecyclerView.ViewHolder{
 
-        candidate = candidateList.get(position);
-
-        holder.itemView.setTag(candidateList.get(position));
-
-        Glide.with(context).asBitmap().load(candidate.getCandidateImage()).into(holder.profile_image);
-
-        holder.tvName.setText(candidate.getCandidateName());
-        holder.tvStatus.setText(candidate.getCandidateStatus());
-
-
-    }
-
-
-    @Override
-    public int getItemCount() {
-        return candidateList.size();
-    }
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        private CircleImageView profile_image;
-
-        private RatingBar rbCriticsRating;
-        private TextView tvName, tvStatus;
+        private CircleImageView profileImage;
+        private TextView tvCandidateName, tvStatus;
+        private RatingBar rbCriticsRating_VB;
 
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            // initialization of views
-            initializeView(itemView);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    event.setOnCandidateRecClickListener(candidateList.indexOf( (Candidate) itemView.getTag() ));
-                }
-            });
-
+            profileImage = itemView.findViewById(R.id.profile_image_VB);
+            tvCandidateName = itemView.findViewById(R.id.tvName_VB);
+            tvStatus = itemView.findViewById(R.id.tvStatus_VB);
+            rbCriticsRating_VB = itemView.findViewById(R.id.rbCriticsRating_VB);
 
         }
-
-        private void initializeView(View view) {
-
-            profile_image = view.findViewById(R.id.profile_image_VB);
-
-            rbCriticsRating = view.findViewById(R.id.rbCriticsRating_VB);
-
-            tvName = view.findViewById(R.id.tvName_VB);
-            tvStatus = view.findViewById(R.id.tvStatus_VB);
-
-        }
-
     }
-
 }

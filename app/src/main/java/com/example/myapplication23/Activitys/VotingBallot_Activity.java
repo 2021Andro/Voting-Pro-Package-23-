@@ -131,11 +131,13 @@ public class VotingBallot_Activity extends AppCompatActivity {
 
                     categoryRef.document(candidate.getCandidateRefID()).update(votingName, FieldValue.increment(1));
 
+                    Intent intent = new Intent(getApplicationContext(), CandidateList_Activity.class);
 
-
-                    Intent intent = new Intent(getApplicationContext(), Home_Activity.class);
+                    intent.putExtra(MyApp.CATEGORY_NAME, candidate.getCandidateCategoryName());
 
                     startActivity(intent);
+
+                    finish();
 
 
                 } else {
@@ -326,5 +328,16 @@ public class VotingBallot_Activity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getApplicationContext(), CandidateList_Activity.class);
 
+        intent.putExtra(MyApp.CATEGORY_NAME, candidate.getCandidateCategoryName());
+
+        startActivity(intent);
+
+        finish();
+
+    }
 }

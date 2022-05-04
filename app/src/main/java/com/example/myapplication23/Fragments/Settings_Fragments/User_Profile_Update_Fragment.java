@@ -69,8 +69,8 @@ public class User_Profile_Update_Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         myView = inflater.inflate(R.layout.fragment_user__profile__update_, container, false);
 
@@ -104,11 +104,15 @@ public class User_Profile_Update_Fragment extends Fragment {
 
                         if (userInfoOld.getUserImage() == null) {
 
+                            // the user cannot set profile pictures than return null
+
                             ivProfile.setImageResource(R.drawable.profile_image);
 
                             isImageSelected = false;
 
                         } else {
+
+                            // user set the profile pictures on registration than return image uri
 
                             isImageSelected = true;
 
@@ -233,114 +237,78 @@ public class User_Profile_Update_Fragment extends Fragment {
     private void setOnUpdateProfile(User_Info userInfo) {
 
         RadioButton chooseGander = myView.findViewById(rgGander.getCheckedRadioButtonId());
+
         DocumentReference userInfoRef = MyApp.myCS.collection("User_Info").document(MyApp.myAuth.getUid().toString());
 
 
-
-        Map<String, Object> updateUserInfo = new HashMap<>();
-
-        updateUserInfo.put("userName", userInfo.getUserName());
-        updateUserInfo.put("userEmailID", userInfo.getUserEmailID());
-        updateUserInfo.put("userPinCode", userInfo.getUserPinCode());
-        updateUserInfo.put("userGander", chooseGander.getText());
+        if (isImageSelected){
 
 
+            Toast.makeText(getContext(), "Image selected "+isImageSelected, Toast.LENGTH_SHORT).show();
 
-        if (isImageSelected) {
+            Map<String, Object> updateUserInfo = new HashMap<>();
 
-            updateUserInfo.put("userImage", userInfo.getUserImage());
+            updateUserInfo.put("userName", userInfo.getUserName());
+            updateUserInfo.put("userEmailID", userInfo.getUserEmailID());
+            updateUserInfo.put("userPinCode", userInfo.getUserPinCode());
+            updateUserInfo.put("userGander", chooseGander.getText());
 
             userInfoRef.update(updateUserInfo);
-            getActivity().startActivity(new Intent(getContext(), Home_Activity.class));
+
+            startActivity(new Intent(getContext(), Home_Activity.class));
             getActivity().finish();
 
-        } else {
-
-            if (userInfoOld.getUserImage() == null) {
-
-
-
-                StorageReference profileFolder = MyApp.myVPS.getReference();
-
-                StorageReference user_profile_images = profileFolder.child("User Profile Images");
-
-                StorageReference user_image_id = user_profile_images.child(UUID.randomUUID().toString());
-
-                UploadTask uploadTask = user_image_id.putFile(imageUri);
-
-                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-
-                        user_image_id
-                                .getDownloadUrl()
-                                .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-
-                                        String imUri = uri.toString();
-                                        updateUserInfo.put("userImage", null);
-
-                                        userInfoRef.update(updateUserInfo);
-                                        getActivity().startActivity(new Intent(getContext(), Home_Activity.class));
-                                        getActivity().finish();
-
-
-
-                                    }
-                                });
-
-
-
-
-                    }
-                });
-
-
-            } else {
-
-
-
-                StorageReference profileFolder = MyApp.myVPS.getReference();
-
-                StorageReference user_profile_images = profileFolder.child("User Profile Images");
-
-                StorageReference user_image_id = user_profile_images.child(UUID.randomUUID().toString());
-
-                UploadTask uploadTask = user_image_id.putFile(imageUri);
-
-                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-
-                        user_image_id
-                                .getDownloadUrl()
-                                .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-
-                                        String imUri = uri.toString();
-                                        updateUserInfo.put("userImage", imUri);
-
-                                        userInfoRef.update(updateUserInfo);
-                                        getActivity().startActivity(new Intent(getContext(), Home_Activity.class));
-                                        getActivity().finish();
-
-
-
-                                    }
-                                });
-
-
-                    }
-                });
-
-
-            }
-
         }
+        else {
+
+
+            StorageReference profileFolder = MyApp.myVPS.getReference();
+
+            StorageReference user_profile_images = profileFolder.child("User Profile Images");
+
+            StorageReference user_image_id = user_profile_images.child(UUID.randomUUID().toString());
+
+            UploadTask uploadTask = user_image_id.putFile(imageUri);
+
+            uploadTask
+            .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+
+                    user_image_id
+                    .getDownloadUrl()
+                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+
+                            String imageUri = uri.toString();
+
+
+                            Map<String, Object> updateUserInfo = new HashMap<>();
+
+                            updateUserInfo.put("userName", userInfo.getUserName());
+                            updateUserInfo.put("userEmailID", userInfo.getUserEmailID());
+                            updateUserInfo.put("userPinCode", userInfo.getUserPinCode());
+                            updateUserInfo.put("userGander", chooseGander.getText());
+                            updateUserInfo.put("userGander", chooseGander.getText());
+                            updateUserInfo.put("userImage", imageUri);
+
+                            userInfoRef.update(updateUserInfo);
+
+                            startActivity(new Intent(getContext(), Home_Activity.class));
+                            getActivity().finish();
+
+                        }
+                    });
+
+                }
+            });
+        }
+
+
+
+
 
 
     }
@@ -413,4 +381,6 @@ public class User_Profile_Update_Fragment extends Fragment {
 
 
     }
+
+
 }

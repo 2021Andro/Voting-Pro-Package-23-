@@ -18,7 +18,7 @@ import com.example.myapplication23.R;
 import java.util.ArrayList;
 
 
-public class Setting_Home_Fragment extends Fragment  implements MySettingsRVAdapter.SettingEvent {
+public class Setting_Home_Fragment extends Fragment  implements MySettingsRVAdapter.MyRecyclerEvent {
 
     private View myView;
     private RecyclerView rvList;
@@ -49,14 +49,15 @@ public class Setting_Home_Fragment extends Fragment  implements MySettingsRVAdap
         rvList.setLayoutManager(layoutManager);
         rvList.setAdapter(mySettingsRVAdapter);
 
-        settingList.add(new MyAppSettings("Profile Update", true));
+        settingList.add(new MyAppSettings("Profile Update", false));
 
 
         return myView;
     }
 
+
     @Override
-    public void setOnEvent(MyAppSettings appSettings, int position) {
+    public void setOnClickItem(String settingName, int position) {
 
 
         switch (position){
@@ -72,5 +73,6 @@ public class Setting_Home_Fragment extends Fragment  implements MySettingsRVAdap
 
                 break;
         }
+
     }
 }

@@ -16,6 +16,7 @@ import com.example.myapplication23.CostumeClasses.Candidate;
 import com.example.myapplication23.CostumeClasses.MyApp;
 import com.example.myapplication23.Interfaces.MyRecCandidatListEvent;
 import com.example.myapplication23.R;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -32,7 +33,6 @@ public class CandidateList_Activity extends AppCompatActivity implements MyRecCa
     private RecyclerView rvCandidateList;
     private MyCandiRecListAdapter myCandiAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<Candidate> candidateList = new ArrayList<>();
 
     private String categoryName;
 
@@ -47,46 +47,52 @@ public class CandidateList_Activity extends AppCompatActivity implements MyRecCa
 
         layoutManager = new LinearLayoutManager(this);
 
-        myCandiAdapter = new MyCandiRecListAdapter(candidateList, this);
+        FirestoreRecyclerOptions<Candidate> options = new FirestoreRecyclerOptions.Builder<Candidate>()
+                .setQuery(MyApp.myCS.collection("Categories "+categoryName+" List"), Candidate.class)
+                .build();
+
+        myCandiAdapter = new MyCandiRecListAdapter(options, this);
 
         rvCandidateList.setLayoutManager(layoutManager);
 
         rvCandidateList.setAdapter(myCandiAdapter);
 
 
+    }
 
-        MyApp.myCS.collection("Categories "+categoryName+" List")
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+    @Override
+    public void setOnCandidateRecClickListener(Candidate candidate) {
 
-                        List<DocumentSnapshot> list=queryDocumentSnapshots.getDocuments();
+        Intent intent = new Intent(getApplicationContext(), VotingBallot_Activity.class);
 
-                        for (DocumentSnapshot documentSnapshot:list)
-                        {
-                            Candidate candidate=documentSnapshot.toObject(Candidate.class);
+        intent.putExtra(MyApp.CANDIDATE, candidate);
 
-                            candidateList.add(candidate);
+        startActivity(intent);
 
-                            myCandiAdapter.notifyDataSetChanged();
-                        }
-
-                    }
-                });
-
-
+        finish();
 
     }
 
     @Override
-    public void setOnCandidateRecClickListener(int position) {
+    protected void onStart() {
+        super.onStart();
+        myCandiAdapter.startListening();
+    }
 
-        Intent intent = new Intent(getApplicationContext(), VotingBallot_Activity.class);
+    @Override
+    protected void onStop() {
+        super.onStop();
+        myCandiAdapter.stopListening();
+    }
 
-        intent.putExtra(MyApp.CANDIDATE, candidateList.get(position));
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(getApplicationContext(), Home_Activity.class);
 
         startActivity(intent);
 
+        finish();
     }
 }
