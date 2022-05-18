@@ -81,6 +81,7 @@ public class VotingBallot_Activity extends AppCompatActivity {
 
         votingRef = MyApp.myRef.getReference("Voting");
 
+        // references of category
         categoryRef = MyApp.myCS.collection("Categories "+candidate.getCandidateCategoryName()+" List");
 
         // This is checking user voting submit or not
@@ -122,14 +123,27 @@ public class VotingBallot_Activity extends AppCompatActivity {
             }
         };
 
+        // it has submit vote and also add 1 vote value
         submitVoteListener = new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
 
                 if (task.isSuccessful()) {
 
+                    String userID = MyApp.myAuth.getUid().toString();
+
 
                     categoryRef.document(candidate.getCandidateRefID()).update(votingName, FieldValue.increment(1));
+                    categoryRef.document(candidate.getCandidateRefID()).update("allVotes", FieldValue.increment(1));
+
+                    MyApp.myCS.collection("User_Info")
+                            .document(userID)
+                            .update(votingName,  FieldValue.increment(1));
+
+                    MyApp.myCS.collection("User_Info")
+                            .document(userID)
+                            .update("allVotes",  FieldValue.increment(1));
+
 
                     Intent intent = new Intent(getApplicationContext(), CandidateList_Activity.class);
 
@@ -299,6 +313,7 @@ public class VotingBallot_Activity extends AppCompatActivity {
         Votes vote = new Votes();
 
         vote.setVotingCandidateDbRef(candidate.getCandidateRefID());
+        vote.setVotingCandidateImage(candidate.getCandidateImage());
         vote.setVotingCandidateName(candidate.getCandidateName());
         vote.setVotingStatus(candidate.getCandidateStatus());
         vote.setVotingSubject(candidate.getCandidateSubject());
@@ -309,21 +324,38 @@ public class VotingBallot_Activity extends AppCompatActivity {
         vote.setVotingComments(comment);
         vote.setVotes(true);
 
-        setVoteRecordDbRef(vote);
+        voteSubmittedDB(vote);
 
 
     }
 
-    private void setVoteRecordDbRef(Votes vote) {
+
+    private void voteSubmittedDB(Votes vote) {
 
 
 
+        // ========== this code was related to user voting history ==========
+
+        String userID = MyApp.myAuth.getUid().toString();
+
+        MyApp
+                .myCS.collection("User_Info")
+                .document(userID)
+                .collection(candidate.getCandidateCategoryName())
+                .add(vote);
+
+
+
+
+        // this code was storing votes runtime database
+        // that database path use from UI to check user is submit vote or not
         votingRef
-                .child(votingName)
-                .child(candidate.getCandidateRefID())
-                .child(MyApp.myAuth.getUid().toString())
-                .setValue(vote)
-                .addOnCompleteListener(submitVoteListener);
+        .child(votingName)
+        .child(candidate.getCandidateRefID())
+        .child(MyApp.myAuth.getUid().toString())
+        .setValue(vote)
+        .addOnCompleteListener(submitVoteListener);
+
 
 
     }

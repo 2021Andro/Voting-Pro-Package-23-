@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Votes implements Serializable {
 
     private String VotingCandidateDbRef;
+    private String VotingCandidateImage;
     private String VotingCandidateName;
     private String VotingStatus;
     private String VotingSubject;
@@ -18,6 +19,13 @@ public class Votes implements Serializable {
     public Votes() {
     }
 
+    public String getVotingCandidateImage() {
+        return VotingCandidateImage;
+    }
+
+    public void setVotingCandidateImage(String votingCandidateImage) {
+        VotingCandidateImage = votingCandidateImage;
+    }
 
     public String getVotingCandidateDbRef() {
         return VotingCandidateDbRef;

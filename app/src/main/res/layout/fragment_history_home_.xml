@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.History_Voting_Fragment.HistoryHome_Fragment"
+    android:orientation="vertical">
+
+    <Spinner
+        android:id="@+id/spinnerHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="35sp"
+        android:contentDescription="@string/app_name"
+        android:minHeight="48dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvListHistory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

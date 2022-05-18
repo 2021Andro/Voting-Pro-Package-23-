@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MyCandiRecListAdapter extends FirestoreRecyclerAdapter<Candidate, MyCandiRecListAdapter.MyViewHolder>  {
+public class MyCandiRecListAdapter extends FirestoreRecyclerAdapter<Candidate, MyCandiRecListAdapter.MyViewHolder> {
 
     private MyRecCandidatListEvent event;
 

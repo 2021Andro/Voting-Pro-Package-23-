@@ -30,6 +30,46 @@ public class User_Info implements Serializable
         UserGander = userGander;
     }
 
+    public long getLikeVotes() {
+        return LikeVotes;
+    }
+
+    public void setLikeVotes(long likeVotes) {
+        LikeVotes = likeVotes;
+    }
+
+    public long getNeutralVotes() {
+        return NeutralVotes;
+    }
+
+    public void setNeutralVotes(long neutralVotes) {
+        NeutralVotes = neutralVotes;
+    }
+
+    public long getDislikeVotes() {
+        return DislikeVotes;
+    }
+
+    public void setDislikeVotes(long dislikeVotes) {
+        DislikeVotes = dislikeVotes;
+    }
+
+    public long getAllVotes() {
+        return AllVotes;
+    }
+
+    public void setAllVotes(long allVotes) {
+        AllVotes = allVotes;
+    }
+
+    public boolean isVoteSubmitted() {
+        return IsVoteSubmitted;
+    }
+
+    public void setVoteSubmitted(boolean voteSubmitted) {
+        IsVoteSubmitted = voteSubmitted;
+    }
+
     public String getUserID() {
         return UserID;
     }

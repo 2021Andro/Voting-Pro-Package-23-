@@ -1,15 +1,18 @@
 package com.example.myapplication23.Fragments.Settings_Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.myapplication23.Activitys.Settings.Setting_Activity;
 import com.example.myapplication23.CostumeAdapters.MySettingsRVAdapter;
 import com.example.myapplication23.CostumeClasses.MyAppSettings;
 import com.example.myapplication23.Interfaces.MyRecCandidatListEvent;
@@ -52,6 +55,7 @@ public class Setting_Home_Fragment extends Fragment  implements MySettingsRVAdap
         settingList.add(new MyAppSettings("Profile Update", false));
 
 
+
         return myView;
     }
 
@@ -75,4 +79,6 @@ public class Setting_Home_Fragment extends Fragment  implements MySettingsRVAdap
         }
 
     }
+
+
 }
