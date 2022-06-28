@@ -35,4 +35,9 @@
     <string name="no_vote_submit_on_this_day">No vote submit on this day</string>
     <string name="yyyy_mm_dd">YYYY/MM/DD</string>
     <string name="sorry_this_date_your_not_voting_submitted">Sorry this date your not voting submitted</string>
+    <string name="choose_the_day">Choose the day</string>
+    <string name="_40">40</string>
+    <string name="trading">Trading</string>
+    <string name="trending_voting">Trending Voting</string>
+    <string name="show_all_vote">Show All Vote</string>
 </resources>

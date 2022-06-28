@@ -39,6 +39,8 @@ public class SetProfileImage_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_profile_image);
 
+        // TODO: 6/28/2022 This activity was Set profile image
+
         profile_image = findViewById(R.id.profile_image_set);
 
         profile_image.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +93,8 @@ public class SetProfileImage_Activity extends AppCompatActivity {
     public void btnSetImage(View view) {
 
         if (isImageSelected) {
+
+            // Set the profile image ( Function call )
             setOnImageSelected(imageUri);
 
         } else {
@@ -102,6 +106,7 @@ public class SetProfileImage_Activity extends AppCompatActivity {
 
     }
 
+    // Set the profile image ( Function definition )
     private void setOnImageSelected(Uri imageUri) {
 
 
@@ -126,7 +131,7 @@ public class SetProfileImage_Activity extends AppCompatActivity {
 
                                 String imUri = uri.toString();
 
-
+                                // Save image uri on collection DB
                                 MyApp.myCS
                                         .collection(MyApp.DB_COL_NAME_USER_INFO)
                                         .document(MyApp.myAuth.getUid().toString())
@@ -168,6 +173,7 @@ public class SetProfileImage_Activity extends AppCompatActivity {
 
     }
 
+    // This function related next anyway button ( Function definition )
     public void btnNextAnyway(View view) {
 
         startActivity(new Intent(getApplicationContext(), Home_Activity.class));

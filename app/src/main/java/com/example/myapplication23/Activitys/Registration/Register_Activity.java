@@ -43,13 +43,65 @@ public class Register_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        // TODO: 6/28/2022 This is a activity for register user
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user != null)
         {
+
+            // The user was register to going Home Activity
             startActivity(new Intent(getApplicationContext(), Home_Activity.class));
             finish();
+
+        } else {
+
+            // The user was not register
+
+            // This function was initialize views ( Function call )
+            initializeViews();
+
+            // This is checking user gander
+            rgGander.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
+                    switch (radioGroup.getCheckedRadioButtonId())
+                    {
+                        case R.id.radio_button_Male:
+
+                            gander = "Male";
+                            isGanderSelected = true;
+
+                            break;
+
+                        case R.id.radio_button_Other:
+
+                            gander = "Other";
+                            isGanderSelected = true;
+
+                            break;
+
+                        case R.id.radio_button_Female:
+
+                            gander = "Female";
+                            isGanderSelected = true;
+
+                            break;
+
+                    }
+
+
+                }
+            });
+
         }
+
+    }
+
+    // This function was initialize views ( Function definition )
+    private void initializeViews() {
+
 
         tfName = findViewById(R.id.tfName_Register);
         etName = findViewById(R.id.etName_Register);
@@ -69,43 +121,13 @@ public class Register_Activity extends AppCompatActivity {
 
         ccp.registerCarrierNumberEditText(etPhoneNumber);
 
-        rgGander.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-
-                switch (radioGroup.getCheckedRadioButtonId())
-                {
-                    case R.id.radio_button_Male:
-
-                        gander = "Male";
-                        isGanderSelected = true;
-
-                        break;
-
-                    case R.id.radio_button_Other:
-
-                        gander = "Other";
-                        isGanderSelected = true;
-
-                        break;
-
-                    case R.id.radio_button_Female:
-
-                        gander = "Female";
-                        isGanderSelected = true;
-
-                        break;
-
-                }
-
-
-            }
-        });
 
     }
 
+    // This function related from register button ( Function definition )
     public void btnRegistration(View view) {
 
+        // This function checking views are empty or not ( Function call )
         if (isViewsEmpty())
         {
 
@@ -129,6 +151,7 @@ public class Register_Activity extends AppCompatActivity {
         }
     }
 
+    // This function checking views are empty or not ( Function definition )
     private boolean isViewsEmpty() {
 
         boolean result = true;

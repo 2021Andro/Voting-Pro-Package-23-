@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VotingPro">
         <activity
+            android:name=".Activitys.Thought_Pattern.Pattern_Home_Activity"
+            android:exported="false" />
+        <activity
             android:name=".Activitys.Votes_History_Details"
             android:exported="false" />
         <activity

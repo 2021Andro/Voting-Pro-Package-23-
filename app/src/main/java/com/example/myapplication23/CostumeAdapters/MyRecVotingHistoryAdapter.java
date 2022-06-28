@@ -43,7 +43,8 @@ public class MyRecVotingHistoryAdapter extends RecyclerView.Adapter<MyRecVotingH
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         Votes votes = myList.get(position);
-        holder.tvName.setText(votes.getVotingCandidateName());
+
+        holder.tvName.setText(votes.getVoteName());
 
         Glide.with(holder.itemView.getContext())
                 .asBitmap()

@@ -43,6 +43,9 @@ public class ManageOtp_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_otp);
 
+        // TODO: 6/28/2022 This activity was manage otp
+
+
         user = (User_Info) getIntent().getSerializableExtra(MyApp.USER);
 
         phoneNumber = user.getUserPhoneNumber();
@@ -50,6 +53,7 @@ public class ManageOtp_Activity extends AppCompatActivity {
         tfOtp = findViewById(R.id.tfOtp_Otp);
         etOtp = findViewById(R.id.etOtp_Otp);
 
+        // This function related from initialize otp ( Function call )
         initializeOtp();
 
         Log.d(TAG, "onCreate: Name "+user.getUserName());
@@ -57,6 +61,7 @@ public class ManageOtp_Activity extends AppCompatActivity {
 
     }
 
+    // This function related from initialize otp ( Function definition )
     private void initializeOtp() {
 
         PhoneAuthOptions options =
@@ -92,6 +97,7 @@ public class ManageOtp_Activity extends AppCompatActivity {
 
     }
 
+    // This function related from sign in button ( Function definition )
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
 
         MyApp.myAuth.signInWithCredential(credential)
@@ -105,7 +111,8 @@ public class ManageOtp_Activity extends AppCompatActivity {
 
                             Log.d(MyApp.myTag, "onComplete: User Id --> "+MyApp.myAuth.getUid());
 
-                            // Update UI
+
+                            // This function related from user register record ( Function definition )
                             registerRecord(task.getResult().getUser().getUid());
 
 
@@ -124,6 +131,7 @@ public class ManageOtp_Activity extends AppCompatActivity {
 
     }
 
+    // This function related from user register record ( Function call )
     private void registerRecord(String dbId) {
 
         user.setUserID(dbId);
@@ -165,6 +173,7 @@ public class ManageOtp_Activity extends AppCompatActivity {
 
     }
 
+    // This function related from otp button ( Function definition )
     public void btnSetOtp(View view) {
 
         String otp = etOtp.getText().toString().trim();
@@ -183,6 +192,7 @@ public class ManageOtp_Activity extends AppCompatActivity {
 
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(otpId,otp);
 
+            // This function related from sign in button ( Function call)
             signInWithPhoneAuthCredential(credential);
 
 
@@ -191,4 +201,5 @@ public class ManageOtp_Activity extends AppCompatActivity {
 
         }
     }
+
 }

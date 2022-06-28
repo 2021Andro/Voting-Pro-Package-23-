@@ -14,7 +14,7 @@ public class Votes implements Serializable {
     private String VoteName;
     private String VoteCategoryName;
     private String VotingComments;
-    private boolean IsVotes;
+    private boolean IsVotes = false;
 
     public Votes() {
     }

@@ -16,6 +16,8 @@ public class Setting_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        // TODO: 6/28/2022 This activity was contained setting fragments
+
         getSupportFragmentManager()
         .beginTransaction()
         .add(R.id.fcHome, new Setting_Home_Fragment())
@@ -23,4 +25,11 @@ public class Setting_Activity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        startActivity(new Intent(Setting_Activity.this, Home_Activity.class));
+        finish();
+    }
 }

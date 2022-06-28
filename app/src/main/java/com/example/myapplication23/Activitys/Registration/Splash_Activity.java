@@ -14,6 +14,9 @@ public class Splash_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+
+        // TODO: 6/28/2022 This is a welcome splash screen to hold user 3 second
+
         Thread thread = new Thread(new Runnable()
         {
             @Override

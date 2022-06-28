@@ -50,7 +50,7 @@ public class User_Profile_Update_Fragment extends Fragment {
     private CircleImageView ivProfile;
     private int imageCode = 1;
     private Uri imageUri;
-    boolean isImageSelected = false;
+    boolean isImageSelected = true;
 
     private TextInputLayout tfName, tfEmailId, tfPinCode;
     private TextInputEditText etName, etEmailId, etPinCode;
@@ -72,25 +72,14 @@ public class User_Profile_Update_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
+
+        // TODO: 6/28/2022 This fragment containing user profile updated
+
         myView = inflater.inflate(R.layout.fragment_user__profile__update_, container, false);
 
-        ivProfile = myView.findViewById(R.id.profile_image_Update);
-        tfName = myView.findViewById(R.id.tfName_Update);
-        etName = myView.findViewById(R.id.etName_Update);
 
-        tfEmailId = myView.findViewById(R.id.tfEmail_Update);
-        etEmailId = myView.findViewById(R.id.etEmail_Update);
-
-        tfPinCode = myView.findViewById(R.id.tfPinCode_Update);
-        etPinCode = myView.findViewById(R.id.etPinCode_Update);
-
-        rgGander = myView.findViewById(R.id.rgGander_Update);
-
-        rbMale = myView.findViewById(R.id.radio_button_Male_Update);
-        rbOther = myView.findViewById(R.id.radio_button_Other_Update);
-        rbFimale = myView.findViewById(R.id.radio_button_Female_Update);
-
-        btnUpdateProfile = myView.findViewById(R.id.btnUpdateProfile);
+        // This function was initialize views ( Function call )
+        initializeViews(myView);
 
         MyApp.myCS
                 .collection("User_Info")
@@ -152,6 +141,30 @@ public class User_Profile_Update_Fragment extends Fragment {
         return myView;
     }
 
+    // This function was initialize views ( Function definition )
+    private void initializeViews(View myView) {
+
+        ivProfile = myView.findViewById(R.id.profile_image_Update);
+        tfName = myView.findViewById(R.id.tfName_Update);
+        etName = myView.findViewById(R.id.etName_Update);
+
+        tfEmailId = myView.findViewById(R.id.tfEmail_Update);
+        etEmailId = myView.findViewById(R.id.etEmail_Update);
+
+        tfPinCode = myView.findViewById(R.id.tfPinCode_Update);
+        etPinCode = myView.findViewById(R.id.etPinCode_Update);
+
+        rgGander = myView.findViewById(R.id.rgGander_Update);
+
+        rbMale = myView.findViewById(R.id.radio_button_Male_Update);
+        rbOther = myView.findViewById(R.id.radio_button_Other_Update);
+        rbFimale = myView.findViewById(R.id.radio_button_Female_Update);
+
+        btnUpdateProfile = myView.findViewById(R.id.btnUpdateProfile);
+
+
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -172,6 +185,7 @@ public class User_Profile_Update_Fragment extends Fragment {
             }
         });
 
+        // This is checking user gander
         rgGander.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -221,7 +235,6 @@ public class User_Profile_Update_Fragment extends Fragment {
                     Log.d(TAG, "Email: " + emailId);
                     Log.d(TAG, "Pincode: " + pinCode);
                     Log.d(TAG, "Gander: " + gander);
-                    Log.d(TAG, "Image Uri: " + imageUri);
 
                     setOnUpdateProfile(userInfoOld);
 
@@ -241,10 +254,85 @@ public class User_Profile_Update_Fragment extends Fragment {
         DocumentReference userInfoRef = MyApp.myCS.collection("User_Info").document(MyApp.myAuth.getUid().toString());
 
 
-        if (isImageSelected){
+
+        if (!isImageSelected){
 
 
-            Toast.makeText(getContext(), "Image selected "+isImageSelected, Toast.LENGTH_SHORT).show();
+            if (imageUri != null)
+            {
+
+                // This is code run user choose the image in a profile
+
+
+                StorageReference profileFolder = MyApp.myVPS.getReference();
+
+                StorageReference user_profile_images = profileFolder.child("User Profile Images");
+
+                StorageReference user_image_id = user_profile_images.child(UUID.randomUUID().toString());
+
+                UploadTask uploadTask = user_image_id.putFile(imageUri);
+
+                uploadTask
+                        .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+
+                                user_image_id
+                                        .getDownloadUrl()
+                                        .addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+
+                                                String imageUri = uri.toString();
+
+
+                                                Map<String, Object> updateUserInfo = new HashMap<>();
+
+                                                updateUserInfo.put("userName", userInfo.getUserName());
+                                                updateUserInfo.put("userEmailID", userInfo.getUserEmailID());
+                                                updateUserInfo.put("userPinCode", userInfo.getUserPinCode());
+                                                updateUserInfo.put("userGander", chooseGander.getText());
+                                                updateUserInfo.put("userImage", imageUri);
+
+                                                userInfoRef.update(updateUserInfo);
+
+                                                startActivity(new Intent(getContext(), Home_Activity.class));
+                                                getActivity().finish();
+
+                                            }
+                                        });
+
+                            }
+                        });
+
+            } else {
+
+                // This is code run user not choose the image in a profile
+                Toast.makeText(getContext(), "Image not selected "+isImageSelected, Toast.LENGTH_SHORT).show();
+
+                Map<String, Object> updateUserInfo = new HashMap<>();
+
+                updateUserInfo.put("userName", userInfo.getUserName());
+                updateUserInfo.put("userEmailID", userInfo.getUserEmailID());
+                updateUserInfo.put("userPinCode", userInfo.getUserPinCode());
+                updateUserInfo.put("userGander", chooseGander.getText());
+
+                userInfoRef.update(updateUserInfo);
+
+                startActivity(new Intent(getContext(), Home_Activity.class));
+                getActivity().finish();
+
+
+            }
+
+
+
+        } else {
+
+
+            // This is code run user not choose the image in a profile
+            Toast.makeText(getContext(), "Image not selected "+isImageSelected, Toast.LENGTH_SHORT).show();
 
             Map<String, Object> updateUserInfo = new HashMap<>();
 
@@ -259,52 +347,6 @@ public class User_Profile_Update_Fragment extends Fragment {
             getActivity().finish();
 
         }
-        else {
-
-
-            StorageReference profileFolder = MyApp.myVPS.getReference();
-
-            StorageReference user_profile_images = profileFolder.child("User Profile Images");
-
-            StorageReference user_image_id = user_profile_images.child(UUID.randomUUID().toString());
-
-            UploadTask uploadTask = user_image_id.putFile(imageUri);
-
-            uploadTask
-            .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-
-
-                    user_image_id
-                    .getDownloadUrl()
-                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-
-                            String imageUri = uri.toString();
-
-
-                            Map<String, Object> updateUserInfo = new HashMap<>();
-
-                            updateUserInfo.put("userName", userInfo.getUserName());
-                            updateUserInfo.put("userEmailID", userInfo.getUserEmailID());
-                            updateUserInfo.put("userPinCode", userInfo.getUserPinCode());
-                            updateUserInfo.put("userGander", chooseGander.getText());
-                            updateUserInfo.put("userGander", chooseGander.getText());
-                            updateUserInfo.put("userImage", imageUri);
-
-                            userInfoRef.update(updateUserInfo);
-
-                            startActivity(new Intent(getContext(), Home_Activity.class));
-                            getActivity().finish();
-
-                        }
-                    });
-
-                }
-            });
-        }
 
 
 
@@ -313,7 +355,7 @@ public class User_Profile_Update_Fragment extends Fragment {
 
     }
 
-
+    // This function checking views are empty or not ( Function definition )
     private boolean isViewsEmpty() {
 
         boolean result = true;
@@ -368,11 +410,7 @@ public class User_Profile_Update_Fragment extends Fragment {
 
                 isImageSelected = true;
 
-                Glide
-                        .with(getContext())
-                        .asBitmap()
-                        .load(userInfoOld.getUserImage())
-                        .into(ivProfile);
+                ivProfile.setImageResource(R.drawable.profile_image);
 
 
             }

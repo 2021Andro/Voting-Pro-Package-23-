@@ -39,6 +39,9 @@ public class Setting_Home_Fragment extends Fragment  implements MySettingsRVAdap
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        // TODO: 6/28/2022 This fragment containing setting list
+
         myView = inflater.inflate(R.layout.fragment_setting__home_, container, false);
 
         rvList = myView.findViewById(R.id.rcSettingsCustomer);

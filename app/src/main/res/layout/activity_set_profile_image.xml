@@ -8,7 +8,8 @@
     android:orientation="vertical"
     tools:context=".Activitys.Registration.SetProfileImage_Activity">
 
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image_set"
         android:layout_width="125dp"
         android:layout_height="125dp"

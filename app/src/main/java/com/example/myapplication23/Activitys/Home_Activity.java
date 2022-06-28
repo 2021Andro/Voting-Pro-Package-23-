@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication23.Activitys.Settings.Setting_Activity;
+import com.example.myapplication23.Activitys.Thought_Pattern.Pattern_Home_Activity;
 import com.example.myapplication23.CostumeAdapters.MyCatRecAdapter;
 import com.example.myapplication23.CostumeClasses.Category;
 import com.example.myapplication23.CostumeClasses.MyApp;
@@ -89,6 +90,7 @@ public class Home_Activity extends AppCompatActivity implements MyRecEvent {
         intent.putExtra(MyApp.CATEGORY_NAME, categoryList.get(position).getCategoryName());
 
         startActivity(intent);
+        finish();
 
     }
 
@@ -131,13 +133,26 @@ public class Home_Activity extends AppCompatActivity implements MyRecEvent {
                         Toast.makeText(Home_Activity.this, "Settings", Toast.LENGTH_SHORT).show();
                         drawerLayout.closeDrawer(GravityCompat.START);
                         startActivity(new Intent(getApplicationContext(), Setting_Activity.class));
+                        finish();
 
                         break;
+
                     case R.id.miUserVotingHistory:
 
                         Toast.makeText(Home_Activity.this, "History", Toast.LENGTH_SHORT).show();
                         drawerLayout.closeDrawer(GravityCompat.START);
-                        startActivity(new Intent(getApplicationContext(), User_Voting_History_Activity.class));
+                        startActivity(new Intent(Home_Activity.this, User_Voting_History_Activity.class));
+                        finish();
+
+
+                        break;
+
+                    case R.id.miUserVotingTrending:
+
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        Toast.makeText(Home_Activity.this, "Trending", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(Home_Activity.this, Pattern_Home_Activity.class));
+                        finish();
 
                         break;
 
